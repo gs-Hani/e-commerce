@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 
 require('dotenv').config();
@@ -22,10 +23,14 @@ nodemon.on('start', function () {
 });
 //=============================================
 
-app.get('/', (req, res) => {
-    res.send('<h1>Hello from your Express.js server!!</h1>');
-});
-   
-app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}`);
-});
+app.use(bodyParser.json())
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+
+const router = require('./routes/index');
+router(app);
+
+app.listen(PORT);

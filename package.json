@@ -9,7 +9,8 @@
   "author": "Hani",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "pg": "^8.8.0"
   },
   "devDependencies": {
     "dotenv": "^16.0.2",
