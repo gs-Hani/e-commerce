@@ -1,10 +1,11 @@
+const { DB } = require('../config');
 const Pool = require('pg').Pool;
 const pool = new Pool({
-  user:     process.env.user,
-  host:     process.env.host,
-  database: process.env.database,
-  password: process.env.password,
-  port:     process.env.port,
+  user:     DB.user,
+  host:     DB.host,
+  database: DB.database,
+  password: DB.password,
+  port:     DB.dbport,
 });
 
 module.exports = {
@@ -13,7 +14,7 @@ module.exports = {
       const start = Date.now()
       const res = await pool.query(text, params)
       const duration = Date.now() - start
-      console.log('executed query', { text, duration, rows: res.rowCount })
+      console.log('executed query', { text, duration, /*rows: res.rowCount*/ })
       return res
     },
 

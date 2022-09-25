@@ -1,15 +1,13 @@
-const express = require('express');
-const router = express.Router();
+const general = require('./general');
+const users = require('./users');
+const products = require('./products');
+const carts = require('./carts');
+const orders = require('./orders')
 
 module.exports = (app) => {
-
-    app.use('/', router);
-
-    router.get('/', (req, res) => {
-        res.send('<h1>Hello from your Express.js server!!</h1>');
-    });
+    general(app);
+    users(app);
+    products(app);
+    carts(app);
+    orders(app);
 };    
-
-
-
-

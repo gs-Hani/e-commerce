@@ -1,10 +1,15 @@
+const express = require('express');
+const router = express.Router();
 const usersService = require('../services/usersService');
 
-module.exports = {
-    app.get('/users', usersService.getUsers(data)),
-    app.get('/users/:id', usersService.getUserById(data)),
-    app.post('/users', usersService.createUser(data)),
-    app.put('/users/:id', usersService.updateUser(data)),
-    app.delete('/users/:id', usersService.deleteUser(data)),
+module.exports = (app) => {
+
+    app.use('/', router);
+
+    router.get('/users', usersService.getUsers);
+    router.get('/users/:id', usersService.getUserById);
+    router.post('/users', usersService.createUser);
+    router.put('/users/:id', usersService.updateUser);
+    router.delete('/users/:id', usersService.deleteUser);
 };
 

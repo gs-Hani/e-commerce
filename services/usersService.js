@@ -1,4 +1,4 @@
-const db = require('./db')
+const db = require('../db')
 
 
 const getUsers = (request, response) => {
@@ -22,10 +22,10 @@ const getUserById = (request, response) => {
 };
 
 const createUser = (request, response) => {
-  const { user_name, email, password, date_of_birth } = request.body
+  const { id,user_name, email, password, date_of_birth, credit, created_at } = request.body
 
-  db.query('INSERT INTO users (user_name, email, password, date_of_birth) VALUES ($1, $2, $3, $4) RETURNING *',
-   [user_name, email, password, date_of_birth],
+  db.query('INSERT INTO users (id, user_name, email, password, date_of_birth, credit, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+   [id,user_name, email, password, date_of_birth, credit, created_at],
     (error, results) => {
     if (error) {
       throw error
@@ -38,11 +38,11 @@ const createUser = (request, response) => {
 
 const updateUser = (request, response) => {
   const id = parseInt(request.params.id)
-  const { name, email } = request.body
+  const { user_name, email, password, date_of_birth } = request.body
 
   db.query(
-    'UPDATE users SET user_name = $1, email = $2 WHERE id = $3 RETURNING *',
-    [name, email, id],
+    'UPDATE users SET user_name = $1, email = $2, password = $3, date_of_birth = $4 WHERE id = $5 RETURNING *',
+    [user_name, email, password, date_of_birth, id],
     (error, results) => {
       if (error) {
         throw error
