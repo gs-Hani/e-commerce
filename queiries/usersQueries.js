@@ -11,9 +11,11 @@ const getUsers = (request, response) => {
 };
 
 const getUserById = (request, response) => {
-  const id = parseInt(request.params.id)
+  const id = parseInt(request.params.id);
+  const values = [id];
+  const statement = `SELECT * FROM users WHERE id = $1`;
 
-  db.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
+  db.query(statement, values, (error, results) => {
     if (error) {
       throw error
     }
@@ -21,19 +23,30 @@ const getUserById = (request, response) => {
   })
 };
 
-const createUser = (request, response) => {
-  const { id,user_name, email, password, date_of_birth, credit, created_at } = request.body
-
-  db.query('INSERT INTO users (id, user_name, email, password, date_of_birth, credit, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-   [id,user_name, email, password, date_of_birth, credit, created_at],
-    (error, results) => {
-    if (error) {
+const getUserByEmail = async (email) => {
+  const values = [email];
+  const statement = `SELECT * FROM users WHERE email = $1`;
+  
+  const result = await db.query(statement, values)
+    if (!result) {
       throw error
-    } else if (!Array.isArray(results.rows) || results.rows.length < 1) {
-    	throw error
     }
-    response.status(201).send(`User added with ID: ${results.rows[0].id}`)
-  })
+  
+  return result.rows[0];
+};
+
+const createUser = (data) => {
+  const { user_name, email, hash, date_of_birth } = data;
+  const statement = `INSERT INTO users (user_name, email, password, date_of_birth) VALUES ( $1, $2, $3, $4 ) RETURNING *`;
+
+  const result = db.query(statement, [user_name, email, hash, date_of_birth]);
+
+  if (!result) {
+    return null
+  } else if (!Array.isArray(result.rows) || result.rows.length < 1) {
+    return null
+  }
+  return result.rows[0];
 };
 
 const updateUser = (request, response) => {
@@ -71,6 +84,7 @@ const deleteUser = (request, response) => {
 module.exports = {
     getUsers,
     getUserById,
+    getUserByEmail,
     createUser,
     updateUser,
     deleteUser

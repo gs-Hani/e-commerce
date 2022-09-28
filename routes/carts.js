@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const cartsService = require('../services/cartsService');
+const cartsService = require('../queiries/cartsQueries');
 
 module.exports = (app) => {
 

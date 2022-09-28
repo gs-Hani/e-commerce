@@ -10,9 +10,9 @@ const pool = new Pool({
 
 module.exports = {
 
-    async query(text, params) {
+    async query(text, params, cb) {
       const start = Date.now()
-      const res = await pool.query(text, params)
+      const res = await pool.query(text, params, cb)
       const duration = Date.now() - start
       console.log('executed query', { text, duration, /*rows: res.rowCount*/ })
       return res

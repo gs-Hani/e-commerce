@@ -1,10 +1,16 @@
 const session = require("express-session");
-const { SECRET } = require('../config')
+const store = new session.MemoryStore(); // used in development only !!!
+const { SECRET } = require('../config');
 
-app.use(
-  session({
-    secret: SECRET,
-    resave: false,
-    saveUninitialized: false,
-  })
-);
+module.exports = (app) => {
+    app.use(
+        session({
+          secret: SECRET,
+          cookie: { maxAge: 1000 * 60 * 60 * 24, secure: true, sameSite: "none" },
+          resave: false,
+          saveUninitialized: false,
+          store,
+        })
+      );
+    return app;
+};

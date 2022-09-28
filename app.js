@@ -1,13 +1,10 @@
-const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
+const express = require('express');
 const app = express();
 
 const { PORT } = require('./config');
-
-//SESSIONS=========================
-
-//=================================
-
+app.use(cors());
 app.use(bodyParser.json())
 app.use(
   bodyParser.urlencoded({
@@ -15,7 +12,7 @@ app.use(
   })
 );
 
-const router = require('./routes/index');
-router(app);
+const modules = require('./modules/index');
+modules(app);
 
 app.listen(PORT, console.log(`server listening to port:${PORT}`));

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const usersService = require('../services/usersService');
+const usersService = require('../queiries/usersQueries');
 
 module.exports = (app) => {
 
