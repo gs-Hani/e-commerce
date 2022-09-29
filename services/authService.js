@@ -51,7 +51,6 @@ async function sign_in (data) {
 async function sign_up (data) {
   const { user_name, email, password, date_of_birth } = data;
   const hash = await passwordHash(password);
-  console.log(hash);
   const newData = { user_name, email, hash, date_of_birth };
 
   try {
@@ -79,5 +78,6 @@ function ensureAuthentication(req, res, next) {
 module.exports = {
     sign_in,
     sign_up,
-    ensureAuthentication
+    ensureAuthentication,
+    passwordHash
 };

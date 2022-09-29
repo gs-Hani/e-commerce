@@ -21,7 +21,8 @@ CREATE TABLE "products" (
   "id" serial PRIMARY KEY,
   "name" varchar(50) NOT NULL,
   "price" bigint NOT NULL,
-  "description" varchar(200) NOT NULL
+  "description" varchar(200) NOT NULL,
+  "category_id" integer NOT NULL
 );
 
 CREATE TABLE "users" (

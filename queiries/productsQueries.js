@@ -1,24 +1,22 @@
 const db = require('../db')
 
 
-const getProducts = (request, response) => {
-  db.query('SELECT * FROM products ORDER BY id ASC', (error, results) => {
-    if (error) {
-      throw error
-    }
-    response.status(200).json(results.rows)
-  })
+const getProducts = async (category) => {
+  const value = [category];
+  const statment = `SELECT * FROM products WHERE category_id = $1 ORDER BY id ASC`;
+  const result = await db.query(statment, value);
+
+  if (!result) { throw error }
+  return result.rows;
 };
 
-const getProductById = (request, response) => {
-  const id = parseInt(request.params.id)
+const getProductById = async (id) => {
+  const values = [id];
+  const statment = `SELECT * FROM products WHERE id = $1`;
+  const result = await db.query(statment, values);
 
-  db.query('SELECT * FROM products WHERE id = $1', [id], (error, results) => {
-    if (error) {
-      throw error
-    }
-    response.status(200).json(results.rows)
-  })
+  if (!result) { throw error }
+  return result.rows[0];
 };
 
 const createProduct = (request, response) => {
