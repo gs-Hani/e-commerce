@@ -1,9 +1,16 @@
 const db = require('../db')
 
+const getProducts = async () => {
+  const statment = `SELECT * FROM products ORDER BY product_id ASC`;
+  const result = await db.query(statment);
 
-const getProducts = async (category) => {
+  if (!result) { throw error }
+  return result.rows;
+};
+
+const getProductsBycategory = async (category) => {
   const value = [category];
-  const statment = `SELECT * FROM products WHERE category_id = $1 ORDER BY id ASC`;
+  const statment = `SELECT * FROM products WHERE category_id = $1 ORDER BY product_id ASC`;
   const result = await db.query(statment, value);
 
   if (!result) { throw error }
@@ -67,9 +74,10 @@ const deleteProduct = (request, response) => {
 };
 
 module.exports = {
-    getProducts,
-    getProductById,
-    createProduct,
-    updateProduct,
-    deleteProduct
+  getProducts, 
+  getProductsBycategory,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct
 };

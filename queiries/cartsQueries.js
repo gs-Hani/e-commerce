@@ -1,5 +1,84 @@
 const db = require('../db')
 
+const addItemToCart = async (data) => {
+  try {
+    const { cart_id, product_id } = data;
+
+    const values1    = [product_id,cart_id];
+    const statement1 = `INSERT INTO cart_items ( product_id, cart_id ) VALUES ($1, $2) RETURNING *`;
+
+    const  result    = await db.query(statement1, values1);
+    return result.rows[0];
+    
+  } catch (err) {
+    throw (err)
+  };
+  
+};
+
+const removeItemFromCart = async (data) => {
+  const         { cart_id, product_id } = data;
+  const values = [cart_id, product_id];
+  const statement = `DELETE FROM cart_items WHERE cart_id = $1 AND product_id = $2`; 
+
+  const  result = await db.query(statement, values);
+  if   (!result) { throw error }
+  return result;
+};
+
+const getCartById = async (cart_id) => {
+  const values    = [cart_id];
+  const statement = `SELECT * FROM carts WHERE cart_id = $1`;
+
+  const result    = await db.query(statement, values);
+  if  (!result) { throw error }
+  return result.rows[0];
+};
+
+const getCartItems = async (cart_id) => {
+  const values     =       [cart_id];
+  const statement  = `SELECT * 
+                      FROM products AS p 
+                      INNER JOIN cart_items AS ci 
+                      ON p.product_id = ci.product_id 
+                      WHERE cart_id = $1`;
+
+  const  result    = await db.query(statement, values);
+  if   (!result) { throw error }
+  return result.rows;
+};
+
+const updateCart = async (data) => {
+  const {cart_id, product_id, quantity} = data;
+
+  const values = [cart_id, product_id, quantity];
+  const statement = `UPDATE cart_items SET quantity = $3 WHERE cart_id = $1 AND product_id = $2`;
+
+  const  result = await db.query(statement, values);
+  if   (!result) { throw error }
+  return result;
+};
+
+const eraseCart = async (cart_id) => {
+  const values = [cart_id];
+  const statement = `DELETE FROM carts WHERE cart_id = $1`;
+
+  const  result = await db.query(statement, values);
+  if   (!result) { throw error }
+  return result;
+};
+
+const createCart = async (cart_id) => {
+  const values = [cart_id];
+  const statement = `INSERT INTO carts (cart_id) VALUES ($1) RETURNING *`;
+
+  const  result = await db.query(statement, values);
+  console.log(result);
+  if   (!result) { throw error }
+  return result;
+};
+
+//UNUSED FUNCTIONS =========================================
 
 const getCarts = (request, response) => {
   db.query('SELECT * FROM cart ORDER BY id ASC', (error, results) => {
@@ -10,68 +89,14 @@ const getCarts = (request, response) => {
   }) 
 };
 
-const getCartById = (request, response) => {
-  const id = parseInt(request.params.id)
-
-  db.query('SELECT * FROM cart WHERE id = $1', [id], (error, results) => {
-    if (error) {
-      throw error
-    }
-    response.status(200).json(results.rows)
-  })
-};
-
-const createCart = (request, response) => {
-  const { id,user_id, created, modified } = request.body
-
-  db.query('INSERT INTO cart (id, user_id, created, modified) VALUES ($1, $2, $3, $4) RETURNING *',
-   [id,user_id, created, modified],
-    (error, results) => {
-    if (error) {
-      throw error
-    } else if (!Array.isArray(results.rows) || results.rows.length < 1) {
-    	throw error
-    }
-    response.status(201).send(`Cart added with ID: ${results.rows[0].id}`)
-  })
-};
-
-const updateCart = (request, response) => {
-  const id = parseInt(request.params.id)
-  const { modified } = request.body
-
-  db.query(
-    'UPDATE cart SET modified = $1 WHERE id = $2 RETURNING *',
-    [modified, id],
-    (error, results) => {
-      if (error) {
-        throw error
-      } if (typeof results.rows == 'undefined') {
-      	response.status(404).send(`Resource not found`);
-      } else if (Array.isArray(results.rows) && results.rows.length < 1) {
-      	response.status(404).send(`Cart not found`);
-      } else {
-  	 	  response.status(200).send(`Cart modified with ID: ${results.rows[0].id}`)         	
-      }
-    }
-  )
-};
-
-const deleteCart = (request, response) => {
-  const id = parseInt(request.params.id)
-
-  db.query('DELETE FROM cart WHERE id = $1', [id], (error, results) => {
-    if (error) {
-      throw error
-    }
-    response.status(200).send(`Cart deleted with ID: ${id}`)
-  })
-};
+//==============================================================================
 
 module.exports = {
-    getCarts,
-    getCartById,
-    createCart,
-    updateCart,
-    deleteCart
+  addItemToCart,
+  removeItemFromCart,
+  eraseCart,
+  getCartById,
+  updateCart,
+  getCartItems,
+  createCart
 };

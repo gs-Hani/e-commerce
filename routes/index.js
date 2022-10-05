@@ -3,7 +3,7 @@ const auth = require('./auth');
 const shop = require('./shop');
 const users = require('./users');
 const products = require('./products');
-const carts = require('./carts');
+const cart = require('./cart');
 const orders = require('./orders');
 
 module.exports = (app, passport) => {
@@ -12,6 +12,6 @@ module.exports = (app, passport) => {
     shop(app);
     users(app);
     products(app);
-    carts(app);
+    cart(app);
     orders(app);
 };    

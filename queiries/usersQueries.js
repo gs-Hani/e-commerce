@@ -10,9 +10,9 @@ const getUsers = (request, response) => {
   })
 };
 
-const getUserById = async (id) => {
-  const values = [id];
-  const statement = `SELECT * FROM users WHERE id = $1`;
+const getUserById = async (user_id) => {
+  const values = [user_id];
+  const statement = `SELECT * FROM users WHERE user_id = $1`;
 
   const result = await db.query(statement, values);
   if (!result) { throw error }
@@ -23,7 +23,7 @@ const getUserByEmail = async (email) => {
   const values = [email];
   const statement = `SELECT * FROM users WHERE email = $1`;
   
-  const result = await db.query(statement, values)
+  const  result = await db.query(statement, values)
     if (!result) {
       throw error
     }

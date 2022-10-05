@@ -4,6 +4,8 @@ module.exports = {
 
     SECRET: process.env.SECRET,
     
+    NODE_ENV:process.env.NODE_ENV,
+
     DB: {
         user: process.env.user,
         host: process.env.host,

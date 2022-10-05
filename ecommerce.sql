@@ -1,5 +1,5 @@
 CREATE TABLE "orders" (
-  "id" serial PRIMARY KEY,
+  "order_id" serial PRIMARY KEY,
   "total" int NOT NULL,
   "created_at" date NOT NULL,
   "modified" date NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE "orders" (
 CREATE TABLE "order_items" (
   "order_id" int,
   "product_id" int,
-  "created" date NOT NULL,
+  "created" DATE NOT NULL DEFAULT CURRENT_DATE,
   "unit_price" money NOT NULL,
   "quantity" int CHECK (quantity >= 1),
   "name" varchar(50) NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE "order_items" (
 );
 
 CREATE TABLE "products" (
-  "id" serial PRIMARY KEY,
+  "product_id" serial PRIMARY KEY,
   "name" varchar(50) NOT NULL,
   "price" bigint NOT NULL,
   "description" varchar(200) NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE "products" (
 );
 
 CREATE TABLE "users" (
-  "id" serial PRIMARY KEY,
+  "user_id" serial PRIMARY KEY,
   "user_name" varchar(50) NOT NULL,
   "email" varchar(50) UNIQUE,
   "password" text NOT NULL,
@@ -35,27 +35,27 @@ CREATE TABLE "users" (
   "created_at" DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
-CREATE TABLE "cart" (
-  "id" serial PRIMARY KEY,
-  "user_id" int NOT NULL,
-  "created" date NOT NULL,
-  "modified" date
+CREATE TABLE "carts" (
+  "cart_id" int PRIMARY KEY,
+  "created" DATE NOT NULL DEFAULT CURRENT_DATE,
+  "modified" DATE DEFAULT CURRENT_DATE
 );
 
-CREATE TABLE "cart_item" (
+CREATE TABLE "cart_items" (
   "product_id" int NOT NULL,
   "cart_id" int NOT NULL,
+  "quantity" int NOT NULL DEFAULT 1,
   PRIMARY KEY (product_id, cart_id)
 );
 
-ALTER TABLE "cart" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+ALTER TABLE "carts" ADD FOREIGN KEY ("cart_id") REFERENCES "users" ("user_id");
 
-ALTER TABLE "orders" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+ALTER TABLE "orders" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("user_id");
 
-ALTER TABLE "order_items" ADD FOREIGN KEY ("order_id") REFERENCES "orders" ("id");
+ALTER TABLE "order_items" ADD FOREIGN KEY ("order_id") REFERENCES "orders" ("order_id");
 
-ALTER TABLE "order_items" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
+ALTER TABLE "order_items" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("product_id");
 
-ALTER TABLE "cart_item" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
+ALTER TABLE "cart_items" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("product_id");
 
-ALTER TABLE "cart_item" ADD FOREIGN KEY ("cart_id") REFERENCES "cart" ("id");
+ALTER TABLE "cart_items" ADD FOREIGN KEY ("cart_id") REFERENCES "carts" ("cart_id");

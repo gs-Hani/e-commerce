@@ -1,8 +1,8 @@
 const { getUserById, updateUser, deleteUser } = require('../queiries/usersQueries');
 
-async function userById (id) {
+async function userById (user_id) {
     try {
-        const foundUser = await getUserById(id);
+        const foundUser = await getUserById(user_id);
         if (!foundUser) {
             console.log('could not find user');
             res.sendStatus(401);
