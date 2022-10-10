@@ -19,9 +19,19 @@ const addItemToCart = async (data) => {
 const removeItemFromCart = async (data) => {
   const         { cart_id, product_id } = data;
   const values = [cart_id, product_id];
-  const statement = `DELETE FROM cart_items WHERE cart_id = $1 AND product_id = $2`; 
+  const statement = `DELETE FROM cart_items WHERE cart_id = $1 AND product_id = $2 RETURNING *`; 
 
   const  result = await db.query(statement, values);
+  if   (!result) { throw error }
+  return result;
+};
+
+const removeِAllItemsFromCart = async (data) => {
+  const/*--------*/{ cart_id } = data;
+  const values    = [cart_id];
+  const statement = `DELETE FROM cart_items WHERE cart_id = $1 RETURNING *`; 
+
+  const  result   = await db.query(statement, values);
   if   (!result) { throw error }
   return result;
 };
@@ -51,16 +61,16 @@ const getCartItems = async (cart_id) => {
 const updateCart = async (data) => {
   const {cart_id, product_id, quantity} = data;
 
-  const values = [cart_id, product_id, quantity];
+  const values    = [cart_id, product_id, quantity];
   const statement = `UPDATE cart_items SET quantity = $3 WHERE cart_id = $1 AND product_id = $2`;
 
-  const  result = await db.query(statement, values);
+  const  result   = await db.query(statement, values);
   if   (!result) { throw error }
   return result;
 };
 
-const eraseCart = async (cart_id) => {
-  const values = [cart_id];
+const eraseCart   = async (cart_id) => {
+  const values    = [cart_id];
   const statement = `DELETE FROM carts WHERE cart_id = $1`;
 
   const  result = await db.query(statement, values);
@@ -68,9 +78,10 @@ const eraseCart = async (cart_id) => {
   return result;
 };
 
-const createCart = async (cart_id) => {
-  const values = [cart_id];
-  const statement = `INSERT INTO carts (cart_id) VALUES ($1) RETURNING *`;
+const createCart = async (data) => {
+  const { cart_id } = data;
+  const   values    = [cart_id];
+  const   statement = `INSERT INTO carts (cart_id) VALUES ($1) RETURNING *`;
 
   const  result = await db.query(statement, values);
   console.log(result);
@@ -78,7 +89,7 @@ const createCart = async (cart_id) => {
   return result;
 };
 
-//UNUSED FUNCTIONS =========================================
+//UNUSED QUERIES ============================================
 
 const getCarts = (request, response) => {
   db.query('SELECT * FROM cart ORDER BY id ASC', (error, results) => {
@@ -89,11 +100,12 @@ const getCarts = (request, response) => {
   }) 
 };
 
-//==============================================================================
+//============================================================
 
 module.exports = {
   addItemToCart,
   removeItemFromCart,
+  removeِAllItemsFromCart,
   eraseCart,
   getCartById,
   updateCart,

@@ -1,6 +1,38 @@
 const db = require('../db')
 
+const createNewOrder  = /*--------*/async (data) => {
+  const/*------------*/{ total,user_id } = data;
+  const  values       = [total,user_id ];
+  const  statement    = `INSERT INTO orders (total, user_id) VALUES ($1, $2) RETURNING *`;
+  const  result       = await db.query(statement, values);
+  if   (!result) { throw error };
+  return result.rows[0];
+};
 
+const addItemToOrder = /*--------------------------------------------*/async (data) => {
+  const/*-----------*/{ order_id, product_id, name, unit_price, quantity  } = data;
+  const  values      = [order_id, product_id, name, unit_price, quantity];
+  const  statement   = `INSERT INTO order_items (order_id, product_id, name, unit_price, quantity) 
+                         VALUES ($1, $2, $3, $4, $5) 
+                         RETURNING *`;
+  const  result      = await db.query(statement, values);
+  if   (!result) { throw error };
+  return result.rows[0];
+};
+
+const setOrder = async (data) => {
+  const/*-----------*/{ total, status, user_id, order_id  } = data;
+  const  values      = [total, status, user_id, order_id];
+  const  statement   = `UPDATE orders 
+                        SET    total   = $1, status = $2 
+                        WHERE  user_id = $3 AND order_id = $4
+                        RETURNING *`;
+  const  result      = await db.query(statement, values);
+  if   (!result) { throw error };
+  return result.rows[0];
+};
+
+//UNUSED QUERIES ============================================
 const getOrders = (request, response) => {
   db.query('SELECT * FROM orders ORDER BY id ASC', (error, results) => {
     if (error) {
@@ -18,21 +50,6 @@ const getOrderById = (request, response) => {
       throw error
     }
     response.status(200).json(results.rows)
-  })
-};
-
-const createOrder = (request, response) => {
-  const { id,total, created_at, modified,status,user_id } = request.body
-
-  db.query('INSERT INTO orders (id, total, created_at, modified, status, user_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-   [id,total, created_at, modified, status, user_id],
-    (error, results) => {
-    if (error) {
-      throw error
-    } else if (!Array.isArray(results.rows) || results.rows.length < 1) {
-    	throw error
-    }
-    response.status(201).send(`Order added with ID: ${results.rows[0].id}`)
   })
 };
 
@@ -67,11 +84,10 @@ const deleteOrder = (request, response) => {
     response.status(200).send(`Order deleted with ID: ${id}`)
   })
 };
+//===========================================================
 
 module.exports = {
-    getOrders,
-    getOrderById,
-    createOrder,
-    updateOrder,
-    deleteOrder
+    createNewOrder,
+    addItemToOrder,
+    setOrder
 };

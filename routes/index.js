@@ -11,7 +11,7 @@ module.exports = (app, passport) => {
     auth(app, passport);
     shop(app);
     users(app);
-    products(app);
+    //products(app);
     cart(app);
     orders(app);
 };    

@@ -1,29 +1,19 @@
 const db = require('../db')
 
-
-const getUsers = (request, response) => {
-  db.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
-    if (error) {
-      throw error
-    }
-    response.status(200).json(results.rows)
-  })
-};
-
 const getUserById = async (user_id) => {
-  const values = [user_id];
+  const values    = [user_id];
   const statement = `SELECT * FROM users WHERE user_id = $1`;
 
-  const result = await db.query(statement, values);
-  if (!result) { throw error }
+  const  result   = await db.query(statement, values);
+  if   (!result) { throw error }
   return result.rows[0];
 };
 
 const getUserByEmail = async (email) => {
-  const values = [email];
-  const statement = `SELECT * FROM users WHERE email = $1`;
+  const values       = [email];
+  const statement    = `SELECT * FROM users WHERE email = $1`;
   
-  const  result = await db.query(statement, values)
+  const  result      = await db.query(statement, values)
     if (!result) {
       throw error
     }
@@ -46,29 +36,53 @@ const createUser = (data) => {
 };
 
 const updateUser = async (data) => {
-  const { id, user_name, email, password, date_of_birth } = data;
-  const statement = `UPDATE users SET user_name = $1, email = $2, password = $3, date_of_birth = $4 WHERE id = $5 RETURNING *`;
-  const result = await db.query(statement,[user_name, email, password, date_of_birth, id]);
+  const { user_id, user_name, email, password, date_of_birth } = data;
+  const statement = `UPDATE users 
+                     SET    user_name = $1, email = $2, password = $3, date_of_birth = $4 
+                     WHERE  user_id = $5 
+                     RETURNING *`;
+  const result = await db.query(statement,[user_name, email, password, date_of_birth, user_id]);
 
-  if (!result) {
+  if  (!result) {
     throw error
   } 
   return result.rows[0];
 };
 
-const deleteUser = async (id) => {
-  const values = [id];
+const updateCredit         = async (data) => {
+  const { cart_id, funds } = data;
+  const values             = [funds, cart_id]
+  const statement          = `UPDATE users SET credit = $1 WHERE user_id = $2 RETURNING * `;
+  const result             = await db.query(statement,values);
+
+  if   (!result) { throw error }
+  return result.rows;
+};
+
+const deleteUser  = async (id) => {
+  const values    = [id];
   const statement = `DELETE FROM users WHERE id = $1`;
-  const result = await db.query(statement,values);
+  const result    = await db.query(statement,values);
 
   return result;
 };
 
+//UNUSED QUERIES ============================================
+const getUsers = (request, response) => {
+  db.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+};
+//===========================================================
+
 module.exports = {
-    getUsers,
     getUserById,
     getUserByEmail,
     createUser,
     updateUser,
+    updateCredit,
     deleteUser
 };

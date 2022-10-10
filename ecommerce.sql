@@ -1,8 +1,7 @@
 CREATE TABLE "orders" (
   "order_id" serial PRIMARY KEY,
   "total" int NOT NULL,
-  "created_at" date NOT NULL,
-  "modified" date NOT NULL,
+  "created_at" date NOT NULL DEFAULT CURRENT_DATE,
   "status" varchar(50) NOT NULL,
   "user_id" int NOT NULL
 );
@@ -10,10 +9,9 @@ CREATE TABLE "orders" (
 CREATE TABLE "order_items" (
   "order_id" int,
   "product_id" int,
-  "created" DATE NOT NULL DEFAULT CURRENT_DATE,
-  "unit_price" money NOT NULL,
-  "quantity" int CHECK (quantity >= 1),
   "name" varchar(50) NOT NULL,
+  "unit_price" int NOT NULL,
+  "quantity" int CHECK (quantity >= 1),
   PRIMARY KEY (order_id, product_id)
 );
 
@@ -31,14 +29,14 @@ CREATE TABLE "users" (
   "email" varchar(50) UNIQUE,
   "password" text NOT NULL,
   "date_of_birth" varchar NOT NULL,
-  "credit" money NOT NULL DEFAULT 0,
+  "credit" int NOT NULL DEFAULT 0,
   "created_at" DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE "carts" (
   "cart_id" int PRIMARY KEY,
   "created" DATE NOT NULL DEFAULT CURRENT_DATE,
-  "modified" DATE DEFAULT CURRENT_DATE
+  "modified" DATE 
 );
 
 CREATE TABLE "cart_items" (
@@ -59,3 +57,15 @@ ALTER TABLE "order_items" ADD FOREIGN KEY ("product_id") REFERENCES "products" (
 ALTER TABLE "cart_items" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("product_id");
 
 ALTER TABLE "cart_items" ADD FOREIGN KEY ("cart_id") REFERENCES "carts" ("cart_id");
+
+CREATE OR REPLACE FUNCTION modifyCart() RETURNS TRIGGER AS $$
+    BEGIN
+        UPDATE carts SET modified = current_timestamp ;
+        RETURN NEW;
+    END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER carts_modified 
+AFTER UPDATE ON cart_items
+FOR EACH ROW 
+EXECUTE PROCEDURE modifyCart();

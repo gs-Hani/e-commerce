@@ -1,4 +1,13 @@
-const { addItemToCart, removeItemFromCart, eraseCart, getCartById, updateCart, getCartItems, createCart } = require('../queiries/cartsQueries');
+const { addItemToCart,
+        removeItemFromCart, 
+        removeِAllItemsFromCart, 
+        eraseCart, 
+        getCartById, 
+        updateCart, 
+        getCartItems, 
+        createCart }                            = require('../queiries/cartsQueries');
+const { createOrder,updateOrder, addOrderItem } = require('../services/ordersService');
+const { updateFunds }                           = require('../services/usersService');
 
 async function loadCartItems (cart_id) {
     try {
@@ -79,16 +88,36 @@ async function updateCartItem (data) {
 
 async function checkout (data) {
     try {
-        const cartItems = await getCartById(cart_id); 
-        const order = 0;
-        if  (!order) {
-            console.log('could not place order');
-            res.sendStatus(502);
-            return;
+        const { credit, cart_id } = data;
+        //check if the user has enogh money !--------------------------------------------------------------------
+        const cartItems = await getCartItems(cart_id);
+        const total     = await cartItems.reduce((total,item) => (total + item.price * item.quantity),0);
+        
+        const funds     = credit - total;
+        if   (funds < 0) {
+            const err        = new Error('Insufficient funds');
+                  err.status = 502;
+            throw err;
+        };
+        //place order !!-----------------------------------------------------------------------------------------
+        let    order      = await createOrder ({user_id:cart_id, total});
+        const {order_id}  = order; //needed for the following step
+        //add cart items to the order !!-------------------------------------------------------------------------
+        let    orderItems = [];
+        async function addMultipleItems () {
+          for (let i = 0; i < cartItems.length; i++) {
+            const/*----------------------------*/{ product_id, name,            price, quantity } = cartItems[i];
+            orderItems += addOrderItem ({order_id, product_id, name, unit_price:price, quantity});
           };
-          return order;
+        };
+        await addMultipleItems ();
+        //update cart, order and user credit----------------------------------------------------------------------
+        const   cart       = await removeِAllItemsFromCart({cart_id});
+        const   newCredit  = await updateFunds           ({cart_id, funds});
+                order      = await updateOrder           ({order_id, total, status:'complete', user_id:cart_id}); 
+        return {order, orderItems, cart, newCredit};
     } catch (err) {
-        console.log(err);
+      throw (err);
     };
 };
 

@@ -18,15 +18,15 @@ module.exports = (app) => {
     });
     router.put('/:userId', async (req,res,next) => {
         try {
-            const { userId } = req.params;
-            let { user_name, email, password, date_of_birth } = req.body;
-            password = await passwordHash(password);
+            const { userId }/*---------------------------------------*/= req.params;
+            let   { user_name, email,        password, date_of_birth } = req.body;
+            password   =  await passwordHash(password);
             const data = { user_name, email, password, date_of_birth };
 
-            const response = await updateAccount({ id: userId, ...data });
+            const/*------------*/response = await updateAccount({ user_id: userId, ...data });
             res.status(200).send(response);
           } catch (err) {
-            next(err);
+            next  (err);
         }; 
     });
     router.delete('/:userId', async (req,res) => {

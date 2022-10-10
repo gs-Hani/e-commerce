@@ -1,52 +1,68 @@
-const { getUserById, updateUser, deleteUser } = require('../queiries/usersQueries');
+const { getUserById, updateUser, updateCredit, deleteUser } = require('../queiries/usersQueries');
 
 async function userById (user_id) {
     try {
         const foundUser = await getUserById(user_id);
-        if (!foundUser) {
-            console.log('could not find user');
-            res.sendStatus(401);
-            return;
+        if  (!foundUser) {
+            const err = new Error('could not find user');
+                  err.status = 401;
+            throw err;
           };
           return foundUser;
 
     } catch (err) {
-        console.log(err);
+      throw (err);
     }
 };
 
 async function updateAccount (data) {
     try {
         const updatedAccount = await updateUser(data);
-        if (!updatedAccount) {
-            console.log('could not update account');
-            res.sendStatus(401);
-            return;
+        if  (!updatedAccount) {
+            const err = new Error('could not update account');
+                  err.status = 401;
+            throw err;
           };
           return updatedAccount;
 
     } catch (err) {
-        console.log(err);
+      throw (err);
+    }
+};
+
+async function updateFunds (data) {
+    try {
+        const newFunds = await updateCredit(data);
+        if  (!newFunds) {
+            const err = new Error('Transaction failed');
+                  err.status = 502;
+            throw err;
+          };
+          return newFunds;
+
+    } catch (err) {
+      throw (err);
     }
 };
 
 async function deleteAccount (id) {
     try {
         const deletedAccoount = await deleteUser(id);
-        if (!deletedAccoount) {
-            console.log('account deleted');
-            res.sendStatus(404);
-            return;
+        if  (!deletedAccoount) {
+            const err = new Error('account deleted');
+                  err.status = 404;
+            throw err;
           };
           return deletedAccoount;
 
     } catch (err) {
-        console.log(err);
+      throw (err);
     }
 };
 
 module.exports = {
     userById,
     updateAccount,
+    updateFunds,
     deleteAccount
 };
