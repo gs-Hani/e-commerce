@@ -1,4 +1,4 @@
-const {createNewOrder, setOrder, addItemToOrder} = require('../queiries/ordersQueries')
+const {createNewOrder, updateOrderByIds, addItemToOrder, getOrdersById, getOrder} = require('../queiries/ordersQueries')
 
 async function createOrder (data) {
     try { 
@@ -17,7 +17,7 @@ async function createOrder (data) {
 
 async function updateOrder (data) {
   try {
-        const updatedOrder = await setOrder(data);
+        const updatedOrder = await updateOrderByIds(data);
         if  (!updatedOrder) {
             const err = new Error('Failed to update order');
                   err.status = 502;
@@ -45,8 +45,40 @@ async function addOrderItem (data) {
     }
 };
 
+async function loadOrders (data) {
+  try {
+      const loadedOrders = await getOrdersById(data);
+      if  (!loadedOrders) {
+          const err = new Error('Failed to load orders');
+                err.status = 502;
+          throw err;
+        };
+        return loadedOrders;
+
+  } catch (err) {
+    throw (err);
+  }
+};
+
+async function loadOrderDetails (data) {
+  try {
+      const loadedOrder = await getOrder(data);
+      if  (!loadedOrder) {
+          const err = new Error('Failed to load order details');
+                err.status = 502;
+          throw err;
+        };
+        return loadedOrder;
+
+  } catch (err) {
+    throw (err);
+  }
+};
+
 module.exports = {
     createOrder,
     updateOrder,
-    addOrderItem
+    addOrderItem,
+    loadOrders,
+    loadOrderDetails
 };

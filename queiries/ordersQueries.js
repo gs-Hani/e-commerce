@@ -20,39 +20,36 @@ const addItemToOrder = /*--------------------------------------------*/async (da
   return result.rows[0];
 };
 
-const setOrder = async (data) => {
-  const/*-----------*/{ total, status, user_id, order_id  } = data;
-  const  values      = [total, status, user_id, order_id];
-  const  statement   = `UPDATE orders 
-                        SET    total   = $1, status = $2 
-                        WHERE  user_id = $3 AND order_id = $4
-                        RETURNING *`;
-  const  result      = await db.query(statement, values);
+const updateOrderByIds = /*----------------------------*/async (data) => {
+  const/*-------------*/{ total, status, user_id, order_id  } = data;
+  const  values        = [total, status, user_id, order_id];
+  const  statement     = `UPDATE orders 
+                          SET    total   = $1, status = $2 
+                          WHERE  user_id = $3 AND order_id = $4
+                          RETURNING *`;
+  const  result    = await db.query(statement, values);
   if   (!result) { throw error };
   return result.rows[0];
 };
 
+const getOrdersById = async (data) => {
+  const values      =       [data];
+  const statement   = `SELECT * FROM orders WHERE user_id = $1`;
+  const result      = await db.query(statement, values);
+  if  (!result) { throw error };
+  return result;
+};
+
+const getOrder = async (data) => {
+  const /*--------*/{ order_id } = data;
+  const  values    = [order_id];
+  const  statement = `SELECT * FROM order_items WHERE order_id = $1`;
+  const  result    = await db.query(statement, values);
+  if   (!result) { throw error };
+  return result.rows;
+};
+
 //UNUSED QUERIES ============================================
-const getOrders = (request, response) => {
-  db.query('SELECT * FROM orders ORDER BY id ASC', (error, results) => {
-    if (error) {
-      throw error
-    }
-    response.status(200).json(results.rows)
-  })
-};
-
-const getOrderById = (request, response) => {
-  const id = parseInt(request.params.id)
-
-  db.query('SELECT * FROM orders WHERE id = $1', [id], (error, results) => {
-    if (error) {
-      throw error
-    }
-    response.status(200).json(results.rows)
-  })
-};
-
 const updateOrder = (request, response) => {
   const id = parseInt(request.params.id)
   const { total, modified, status } = request.body
@@ -89,5 +86,7 @@ const deleteOrder = (request, response) => {
 module.exports = {
     createNewOrder,
     addItemToOrder,
-    setOrder
+    updateOrderByIds,
+    getOrdersById,
+    getOrder
 };

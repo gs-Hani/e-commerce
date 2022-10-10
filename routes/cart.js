@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { addItem, removeItem, updateCartItem, loadCartItems, checkout } = require('../services/cartsService');
-const { ensureAuthentication } = require('../services/authService')
+const { ensureAuthentication } = require('../services/authService');
 
 module.exports = (app) => {
 
@@ -21,14 +21,14 @@ module.exports = (app) => {
     router.post('/:product_id', async (req,res,next) => {
         try {
             const auth = await ensureAuthentication(req);
-            if  (!auth) { res.redirect('./auth') };
+            if  (!auth) { res.redirect('./auth') } 
+            else {
+                const { user_id }    = req.user;
+                const { product_id } = req.params;
 
-            const { user_id }    = req.user;
-            const { product_id } = req.params;
-
-            const/*------------*/result = await addItem({user_id, product_id});
-            res.status(200).send(result);
-
+                const/*------------*/result = await addItem({user_id, product_id});
+                res.status(200).send(result);
+            };
         } catch (err) { 
           next  (err) };
     });
