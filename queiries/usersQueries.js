@@ -1,7 +1,7 @@
 const db = require('../db')
 
 const getUserById = async (user_id) => {
-  const values    = [user_id];
+  const values    =       [user_id];
   const statement = `SELECT * FROM users WHERE user_id = $1`;
 
   const  result   = await db.query(statement, values);
@@ -56,27 +56,16 @@ const updateCredit         = async (data) => {
   const result             = await db.query(statement,values);
 
   if   (!result) { throw error }
-  return result.rows;
+  return result.rows[0].credit;
 };
 
-const deleteUser  = async (id) => {
-  const values    = [id];
-  const statement = `DELETE FROM users WHERE id = $1`;
+const deleteUser  = async (user_id) => {
+  const values    =       [user_id];
+  const statement = `DELETE FROM users WHERE user_id = $1`;
   const result    = await db.query(statement,values);
 
-  return result;
+  return result.rows;
 };
-
-//UNUSED QUERIES ============================================
-const getUsers = (request, response) => {
-  db.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
-    if (error) {
-      throw error
-    }
-    response.status(200).json(results.rows)
-  })
-};
-//===========================================================
 
 module.exports = {
     getUserById,

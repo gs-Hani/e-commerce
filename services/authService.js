@@ -17,9 +17,9 @@ const passwordHash = async (password) => {
   return null
 };
 
-const comparePasswords = async (password,hash) => {
+const comparePasswords = /*----------*/async (password,hash) => {
   try {
-    const  matchFound = await bcrypt.compare(password,hash);
+    const  matchFound  = await bcrypt.compare(password,hash);
     return matchFound;
     
   } catch (err) {
@@ -31,10 +31,10 @@ const comparePasswords = async (password,hash) => {
 async function sign_in (data) { 
   try {
     const { email, password } = data;
-    const user = await getUserByEmail(email);
+    const   user/*----------*/= await getUserByEmail(email);
     
     if (!user) {
-      const err = new Error('Incorrect email');
+      const err        = new Error('Incorrect email');
             err.status = 401;
       throw err;
     };
@@ -55,12 +55,10 @@ async function sign_in (data) {
 
 async function sign_up (data) {
   try {
-    const { user_name, email,       password,     date_of_birth } = data;
-    const hash = await passwordHash(password);
-
+    const /*------*/{ user_name, email,password,date_of_birth } = data;
+    const hash    = await passwordHash(password);
     const newData = { user_name, email, hash, date_of_birth };
-
-    const user = await getUserByEmail(email);
+    const user    = await getUserByEmail(email);
 
     if (user) {
       const err = new Error('Email already in use');
@@ -75,7 +73,7 @@ async function sign_up (data) {
   
 };
 
-async function ensureAuthentication(req) {
+async function ensureAuthentication (req) {
   if (!req.user) {
     return false;
   } return true ;

@@ -1,6 +1,6 @@
 const express = require('express');
-const router = express.Router();
-const { sign_up } = require('../services/authService');
+const router  = express.Router();
+const { sign_up }                   = require('../services/authService');
 const { deleteCart, loadCartItems } = require('../services/cartsService');
 
 module.exports = (app, passport) => {
@@ -24,8 +24,11 @@ module.exports = (app, passport) => {
     });
     
     router.post("/sign_in",passport.authenticate('local'), async (req, res, next) => {
+      
       try {
+
         res.status(200).redirect('/shop');
+
       } catch (err) {
         next  (err);
       }
@@ -35,20 +38,19 @@ module.exports = (app, passport) => {
       try {
 
         //check if the cart is empty to automatically delete it
-        const { user_id } = req.user; 
-        const notSoEmptyCart = await loadCartItems(user_id);
-        console.log(notSoEmptyCart);
-        if  (notSoEmptyCart.length === 0) { deleteCart({cart_id: user_id}); }
+        const { user_id }             = req.user; 
+        const   notSoEmptyCart        = await  loadCartItems(user_id);
+        if     (notSoEmptyCart.length === 0) { deleteCart   (user_id); }
 
         //actually logout
         req.logout(function(err) {
-        if (err)
-          { return next(err); }
-        res.status(200).redirect('/');
+          if (err)
+            { return next(err); }
+          res.status(200).redirect('/');
         });
 
       } catch (err) {  
-       next(err);
+        next  (err);
       }
         
     });

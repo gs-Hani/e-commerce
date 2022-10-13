@@ -1,0 +1,751 @@
+openapi: 3.0.1
+info:
+  title: e-commerce API
+  version: 1.0.0
+  description: An API for online purchasing
+paths:
+  /:
+    summary: Home page
+    description: This path is to retrieve the home page of the website.
+    get:
+      summary: get the main page
+      description: ''
+      operationId: get_main page
+      responses:
+        '200':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Hello:
+                  value: Hello from your Express.js server!!
+        '500':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Internal server error
+      tags:
+        - Main
+  /auth:
+    summary: Get the authentication page
+    description: This path opens the options for sign_ups, sign_ins and sign_outs.
+    get:
+      summary: Get the authorization page
+      description: ''
+      operationId: get_auth page
+      responses:
+        '200':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Hello:
+                  value: Hello from your AUTH page!!
+        '500':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Internal server error
+        default:
+          description: Default error sample response
+      tags:
+        - Auth
+  /auth/sign_up:
+    summary: Register to the website services
+    post:
+      summary: Register to the website
+      description: Update the users table with a new record of the new user's data
+      operationId: post_sign up
+      requestBody:
+        description: A new order object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User_data'
+      responses:
+        '200':
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                User:
+                  value: |-
+                    {
+                        "user_name":"name",
+                        "email":"name@yahoo.com",
+                        "date_of_birth":"YYYY-MM-DD"
+                    }
+        '409':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Email already exists
+        '500':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                server error:
+                  value: Internal server error
+        default:
+          description: Default error sample response
+      tags:
+        - Auth
+  /auth/sign_in:
+    summary: Login to the website
+    post:
+      summary: Log into the website
+      description: Verify the user to get access to more features
+      operationId: post_sign in
+      requestBody:
+        description: A new order object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sign_in'
+      responses:
+        '200':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                success:
+                  value: Welcome to the shop
+        '401':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                email:
+                  value: Incorrect email
+                password:
+                  value: Incorrect password
+        '500':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Server:
+                  value: Internal server error
+        default:
+          description: Default error sample response
+      tags:
+        - Auth
+  /auth/sign_out:
+    summary: Sign out of the website
+    get:
+      summary: it signs out
+      description: ''
+      operationId: get_sign out
+      responses:
+        '200':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                success:
+                  value: Hello from your Express.js server!!
+        '500':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Server:
+                  value: Internal server error
+      tags:
+        - Auth
+  /shop:
+    summary: Get the main page of the shop
+    get:
+      summary: Get the shop page
+      description: ''
+      operationId: get_shop
+      responses:
+        '200':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Welcome to the shop:
+                  value: Welcome to the shop
+        '500':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Internal server error
+        default:
+          description: Default error sample response
+      tags:
+        - Shop
+  /shop/products:
+    summary: Get products categories
+    get:
+      summary: Get products by category
+      description: ''
+      operationId: get_product categories
+      responses:
+        '200':
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Array:
+                  value: >-
+                    [{"product_id":2,"name":"saif","price":"300","description":"sword","category_id":2},{"product_id":3,"name":"yari","price":"500","description":"spear","category_id":2}]
+        '401':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: No products currently in this category
+        '500':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Internal server error
+        default:
+          description: Default error sample response
+      tags:
+        - Shop
+  /shop/products/{product_id}:
+    summary: Get product by its ID
+    get:
+      summary: Get product by ID
+      description: Get the specifications of one product
+      operationId: get_product
+      parameters:
+        - name: product_id
+          in: path
+          description: 'The id of the product.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Object:
+                  value: >-
+                    {"product_id":1,"name":"mp5","price":"250","description":"automatic
+                    gun","category_id":1}
+        '401':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: The product was not found
+        '500':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Internal server error
+        default:
+          description: Default error sample response
+      tags:
+        - Shop
+  /users/{user_id}:
+    summary: Get user profile
+    description: Open, update or delete the profile (page) through this path.
+    get:
+      summary: Get user profile page
+      description: ''
+      operationId: get_user profile
+      parameters:
+        - name: user_id
+          in: path
+          description: 'The id of the user.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Object:
+                  value: >-
+                    {"user_id":9,"user_name":"name","email":"name@yahoo.com","password":"$2b$14$YbnEZkm.yx4HviDtMrFDn.YfwwEiLZl5LnhdJWgcHg18Bu030hP3K","date_of_birth":"YYYY-MM-DD","credit":0,"created_at":"2022-10-11T21:00:00.000Z"}
+        '404':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Could not find user
+        '500':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Internal server error
+        default:
+          description: Default error sample response
+      tags:
+        - User
+    put:
+      summary: Update user profile
+      description: ''
+      operationId: put_user profile
+      parameters:
+        - name: user_id
+          in: path
+          description: 'The id of the user.'
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: A new order object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User_data'
+        required: true
+      responses:
+        '200':
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Object:
+                  value: >-
+                    {"user_id":9,"user_name":"name","email":"name@yahoo.com","password":"$2b$16$sC5kP25k.7OMYzStolT9uOHH0vbtumPYxDGx6euxkwItOznIEr3ZG","date_of_birth":"YYYY-MM-DD","credit":0,"created_at":"2022-10-11T21:00:00.000Z"}
+        '401':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Could not update account
+        '500':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Internal server error
+        default:
+          description: Default error sample response
+      tags:
+        - User
+    delete:
+      summary: Delete account
+      description: ''
+      operationId: delete_user account
+      parameters:
+        - name: user_id
+          in: path
+          description: 'The id of the user.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '404':
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Array:
+                  value: '[]'
+            text/plain; charset=utf-8:
+              examples:
+                Success:
+                  value: Account was not deleted
+        '500':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Internal server error
+        default:
+          description: Default error sample response
+      tags:
+        - User
+  /cart/{cart_id}:
+    summary: View cart items
+    get:
+      summary: Load cart items
+      description: ''
+      operationId: get_cart items
+      parameters:
+        - name: cart_id
+          in: path
+          description: 'The id of the cart.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Array:
+                  value: |-
+                    [
+                        {
+                            "product_id": 1,
+                            "name": "mp5",
+                            "price": "250",
+                            "description": "automatic gun",
+                            "category_id": 1,
+                            "cart_id": 1,
+                            "quantity": 1
+                        }
+                    ]
+        '502':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: could not load cart
+        default:
+          description: Default error sample response
+      tags:
+        - Cart
+  /cart/{product_id}:
+    summary: Add item to the cart
+    post:
+      summary: Add item to cart
+      description: ''
+      operationId: post_item
+      parameters:
+        - name: product_id
+          in: path
+          description: 'The id of the product.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Object:
+                  value: |-
+                    {
+                        "product_id": 1,
+                        "cart_id": 1,
+                        "quantity": 1
+                    }
+        '502':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Item was not added, please try again
+        default:
+          description: Default error sample response
+      tags:
+        - Cart
+  /cart/{cart_id}/{product_id}:
+    summary: Remove or update cart item
+    description: This path allows for the removal or update of cart items
+    delete:
+      summary: Remove item from cart
+      description: ''
+      operationId: delete_cart item
+      parameters:
+        - name: cart_id
+          in: path
+          description: 'The id of the cart.'
+          required: true
+          schema:
+            type: string
+        - name: product_id
+          in: path
+          description: 'The id of the product.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '404':
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Object:
+                  value: |2-
+                     {
+                            "product_id": 1,
+                            "cart_id": 1,
+                            "quantity": 1
+                        }
+        '502':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: could not remove item
+        default:
+          description: Default error sample response
+      tags:
+        - Cart
+    put:
+      summary: Update cart item
+      description: ''
+      operationId: put_cart item
+      parameters:
+        - name: cart_id
+          in: path
+          description: 'The id of the cart.'
+          required: true
+          schema:
+            type: string
+        - name: product_id
+          in: path
+          description: 'The id of the product.'
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: A new order object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Edit_cart'
+        required: true
+      responses:
+        '200':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Text:
+                  value: UPDATE
+        '502':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: could not update cart
+        default:
+          description: Default error sample response
+      tags:
+        - Cart
+  /cart/{cart_id}/checkout:
+    summary: Pay for the products in the cart
+    post:
+      summary: Proceed to checkout
+      description: ''
+      operationId: post_checkout
+      parameters:
+        - name: cart_id
+          in: path
+          description: 'The id of the cart.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Object:
+                  value: |-
+                    {
+                        "result": {
+                            "order": {
+                                "order_id": 43,
+                                "total": 1050,
+                                "created_at": "2022-10-12T21:00:00.000Z",
+                                "status": "complete",
+                                "user_id": 1
+                            },
+                            "orderItems": [
+                                {
+                                    "order_id": 43,
+                                    "product_id": 2,
+                                    "unit_price": "د.أ. 300.000",
+                                    "quantity": 1,
+                                    "name": "saif"
+                                },
+                                {
+                                    "order_id": 43,
+                                    "product_id": 3,
+                                    "unit_price": "د.أ. 500.000",
+                                    "quantity": 1,
+                                    "name": "yari"
+                                },
+                                {
+                                    "order_id": 43,
+                                    "product_id": 1,
+                                    "unit_price": "د.أ. 250.000",
+                                    "quantity": 1,
+                                    "name": "mp5"
+                                }
+                            ],
+                            "cart": "DELETE",
+                            "newCredit": 12550
+                        }
+                    }
+        '502':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error1:
+                  value: Insufficient funds
+                Error2:
+                  value: Failed to create order
+                Error3:
+                  value: Failed to add items to the order
+                Error4:
+                  value: Transaction failed
+                Error5:
+                  value: Failed to update order
+        default:
+          description: Default error sample response
+      tags:
+        - Cart
+  /orders:
+    summary: View the user's order history
+    get:
+      summary: Get orders history
+      description: Get a list of the users orders
+      operationId: get_orders
+      responses:
+        '200':
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Array:
+                  value: |-
+                    [
+                        {
+                            "order_id": 24,
+                            "total": 0,
+                            "created_at": "2022-10-12T21:00:00.000Z",
+                            "status": "complete",
+                            "user_id": 1
+                        },
+                        {
+                            "order_id": 25,
+                            "total": 2500,
+                            "created_at": "2022-10-12T21:00:00.000Z",
+                            "status": "complete",
+                            "user_id": 1
+                        }
+                    ]
+        '502':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Failed to load orders
+        default:
+          description: Default error sample response
+      tags:
+        - Orders
+  /orders/{order_id}:
+    summary: View details about the specific order
+    get:
+      summary: Get order details
+      description: ''
+      operationId: get_order
+      parameters:
+        - name: order_id
+          in: path
+          description: 'The id of the order.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Array:
+                  value: |-
+                    [
+                        {
+                            "order_id": 20,
+                            "product_id": 1,
+                            "unit_price": "د.أ. 250.000",
+                            "quantity": 2,
+                            "name": "mp5"
+                        },
+                        {
+                            "order_id": 20,
+                            "product_id": 2,
+                            "unit_price": "د.أ. 300.000",
+                            "quantity": 5,
+                            "name": "saif"
+                        },
+                        {
+                            "order_id": 20,
+                            "product_id": 3,
+                            "unit_price": "د.أ. 500.000",
+                            "quantity": 10,
+                            "name": "yari"
+                        }
+                    ]
+        '502':
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Failed to load order details
+        default:
+          description: Default error sample response
+      tags:
+        - Orders
+components:
+  schemas:
+    User_data:
+      type: object
+      properties:
+        user_name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        date_of_birth:
+          type: string
+      xml:
+        name: User_data
+    Sign_in:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      xml:
+        name: Sign_in
+    Edit_cart:
+      type: object
+      properties:
+        quantity:
+          type: integer
+      xml:
+        name: Edit_cart

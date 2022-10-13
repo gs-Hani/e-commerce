@@ -2,13 +2,13 @@ const {createNewOrder, updateOrderByIds, addItemToOrder, getOrdersById, getOrder
 
 async function createOrder (data) {
     try { 
-        const newOrder = await createNewOrder(data);
+        const newOrder       = await createNewOrder(data);
         if  (!newOrder) {
-            const err = new Error('Failed to create order');
+            const err        = new Error('Failed to create order');
                   err.status = 502;
             throw err;
-          };
-          return newOrder;
+        };
+        return newOrder;
 
     } catch (err) {
       throw (err);
@@ -17,13 +17,13 @@ async function createOrder (data) {
 
 async function updateOrder (data) {
   try {
-        const updatedOrder = await updateOrderByIds(data);
+        const updatedOrder   = await updateOrderByIds(data);
         if  (!updatedOrder) {
-            const err = new Error('Failed to update order');
+            const err        = new Error('Failed to update order');
                   err.status = 502;
             throw err;
-          };
-          return updatedOrder;
+        };
+        return updatedOrder;
 
     } catch (err) {
       throw (err);
@@ -62,9 +62,9 @@ async function loadOrders (data) {
 
 async function loadOrderDetails (data) {
   try {
-      const loadedOrder = await getOrder(data);
+      const loadedOrder    = await getOrder(data);
       if  (!loadedOrder) {
-          const err = new Error('Failed to load order details');
+          const err        = new Error('Failed to load order details');
                 err.status = 502;
           throw err;
         };

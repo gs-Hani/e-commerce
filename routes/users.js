@@ -1,40 +1,48 @@
 const express = require('express');
-const router = express.Router();
-const { userById, updateAccount, deleteAccount } = require('../services/usersService');
-const { passwordHash } = require('../services/authService')
+const router  = express.Router();
+const { userById, 
+        updateAccount, 
+        deleteAccount } = require('../services/usersService');
+const { passwordHash }  = require('../services/authService')
 
 module.exports = (app) => {
 
     app.use('/users', router);
 
-    router.get('/:userId', async (req,res) => {
+    router.get('/:user_id', async (req,res) => {
         try {
-            const { userId } = req.params;
-            const response = await userById(userId);
+
+            const /*-------------------*/ { user_id } = req.params;
+            const response = await userById(user_id);
             res.status(200).send(response);
+
           } catch (err) {
-            next(err);
+            next  (err);
         };
     });
-    router.put('/:userId', async (req,res,next) => {
+
+    router.put('/:user_id', async (req,res,next) => {
         try {
-            const { userId }/*---------------------------------------*/= req.params;
+            const { user_id }/*--------------------------------------*/= req.params;
             let   { user_name, email,        password, date_of_birth } = req.body;
             password   =  await passwordHash(password);
             const data = { user_name, email, password, date_of_birth };
 
-            const/*------------*/response = await updateAccount({ user_id: userId, ...data });
+            const/*------------*/response = await updateAccount({ user_id, ...data });
             res.status(200).send(response);
+
           } catch (err) {
             next  (err);
         }; 
     });
+
     router.delete('/:userId', async (req,res) => {
         try {
             const { userId } = req.params;
 
             const response = await deleteAccount(userId);
             res.status(404).send(response);
+            
           } catch (err) {
             next(err);
         };

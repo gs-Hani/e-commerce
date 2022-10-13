@@ -4,7 +4,7 @@ async function userById (user_id) {
     try {
         const foundUser = await getUserById(user_id);
         if  (!foundUser) {
-            const err = new Error('could not find user');
+            const err        = new Error('could not find user');
                   err.status = 401;
             throw err;
           };
@@ -19,7 +19,7 @@ async function updateAccount (data) {
     try {
         const updatedAccount = await updateUser(data);
         if  (!updatedAccount) {
-            const err = new Error('could not update account');
+            const err        = new Error('could not update account');
                   err.status = 401;
             throw err;
           };
@@ -32,24 +32,24 @@ async function updateAccount (data) {
 
 async function updateFunds (data) {
     try {
-        const newFunds = await updateCredit(data);
+        const newFunds       = await updateCredit(data);
         if  (!newFunds) {
-            const err = new Error('Transaction failed');
+            const err        = new Error('Transaction failed');
                   err.status = 502;
             throw err;
-          };
-          return newFunds;
+        };
+        return newFunds;
 
     } catch (err) {
       throw (err);
     }
 };
 
-async function deleteAccount (id) {
+async function deleteAccount (user_id) {
     try {
-        const deletedAccoount = await deleteUser(id);
-        if  (!deletedAccoount) {
-            const err = new Error('account deleted');
+        const deletedAccoount = await deleteUser(user_id);
+        if   (deletedAccoount) {
+            const err        = new Error('account was not deleted');
                   err.status = 404;
             throw err;
           };

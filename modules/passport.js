@@ -1,7 +1,7 @@
-const passport = require('passport');   
+const passport      = require('passport');   
 const LocalStrategy = require('passport-local').Strategy;
 
-const { sign_in } = require('../services/authService');
+const { sign_in }  = require('../services/authService');
 const { userById } = require('../services/usersService');
 
 
@@ -14,8 +14,10 @@ module.exports = (app) => {
     });
       
     passport.deserializeUser(async (user_id,done) => {
-      const user = await userById(user_id);
+
+      const user   = await userById(user_id);
       const credit = user.credit;
+
       return done(null, {user_id, credit});
     });
     
@@ -25,7 +27,7 @@ module.exports = (app) => {
             const/*--------- */user = await sign_in({email:username, password});
             return done (null, user);
 
-          } catch/*--*/(err) {
+          } catch      (err) {
             return done(err);
           }
         })

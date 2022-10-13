@@ -1,28 +1,27 @@
 const db = require('../db')
 
 const getProducts = async () => {
-  const statment = `SELECT * FROM products ORDER BY product_id ASC`;
-  const result = await db.query(statment);
-
-  if (!result) { throw error }
+  const  statment = `SELECT * FROM products ORDER BY product_id ASC`;
+  const  result   = await db.query(statment);
+  if   (!result) { throw error }
   return result.rows;
 };
 
 const getProductsBycategory = async (category) => {
-  const value = [category];
-  const statment = `SELECT * FROM products WHERE category_id = $1 ORDER BY product_id ASC`;
-  const result = await db.query(statment, value);
+  const  value    =                 [category];
+  const  statment = `SELECT * FROM products WHERE category_id = $1 ORDER BY product_id ASC`;
+  const  result   = await db.query(statment, value);
 
-  if (!result) { throw error }
+  if   (!result) { throw error }
   return result.rows;
 };
 
-const getProductById = async (id) => {
-  const values = [id];
-  const statment = `SELECT * FROM products WHERE id = $1`;
-  const result = await db.query(statment, values);
+const getProductById = async (product_id) => {
+  const  values      =       [product_id];
+  const  statment    = `SELECT * FROM products WHERE product_id = $1`;
+  const  result      = await db.query(statment, values);
 
-  if (!result) { throw error }
+  if   (!result) { throw error }
   return result.rows[0];
 };
 

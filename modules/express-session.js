@@ -1,11 +1,11 @@
-const morgan = require('morgan');
+const morgan       = require('morgan');
 const errorHandler = require('errorhandler');
 
-const cors = require('cors');
+const cors       = require('cors');
 const bodyParser = require('body-parser');
 
 const session = require("express-session");
-const store = new session.MemoryStore(); // used in development only !!!
+const store   = new session.MemoryStore(); // used in development only !!!
 
 const { SECRET, NODE_ENV } = require('../config');
 
@@ -24,10 +24,12 @@ module.exports = (app) => {
 
   app.use(
     session({
-      secret: SECRET,
-      resave: false,
+      secret           : SECRET,
+      resave           : false,
       saveUninitialized: false,
-      cookie: { maxAge: 1000 * 60 * 60 * 24, secure: NODE_ENV === 'PRODUCTION', sameSite: "none" },
+      cookie           : { maxAge: 1000 * 60 * 60 * 24, 
+                           secure: NODE_ENV === 'PRODUCTION', 
+                           sameSite: "none" },
       store,
     })
   );

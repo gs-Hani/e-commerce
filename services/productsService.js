@@ -1,54 +1,37 @@
-const { getProducts, getProductsBycategory, getProductById } = require('../queiries/productsQueries')
-
-async function display () {
-
-    try {
-        const products = await getProducts();
-        if  (!products) {
-            console.log('something went wrong');
-            res.sendStatus(404);
-            return;
-          };
-          return products;
-
-    }        catch (err) {
-        console.log(err);
-    }
-};
+const { getProductsBycategory, getProductById } = require('../queiries/productsQueries')
 
 async function searchByCategory (category) {
 
     try {
-        const foundProducts = await getProductsBycategory(category);
+        const foundProducts  = await getProductsBycategory(category);
         if  (!foundProducts) {
-            console.log('No products currently in this category');
-            res.sendStatus(401);
-            return;
-          };
-          return foundProducts;
-
-    } catch        (err) {
-        console.log(err);
-    }
-};
-
-async function searchById (id) {
-    try {
-        const foundProducts = await getProductById(id);
-        if  (!foundProducts) {
-            console.log('No products found');
-            res.sendStatus(401);
-            return;
+            const err        = new Error('No products currently in this category');
+                  err.status = 401;
+            throw err;
           };
           return foundProducts;
 
     } catch (err) {
-        console.log(err);
+      throw (err);
+    }
+};
+
+async function searchById (product_id) {
+    try {
+        const foundProducts = await getProductById(product_id);
+        if  (!foundProducts) {
+            const err        = new Error('The product was not found');
+                  err.status = 401;
+            throw err;
+          };
+          return foundProducts;
+
+    } catch (err) {
+      throw (err);
     }
 };
 
 module.exports = {
-    display,
     searchByCategory,
     searchById
 };
