@@ -1,11 +1,8 @@
-const express = require('express');
-const router = express.Router();
+const   express = require('express');
+const   router  = express.Router();
+const { home }  = require('../controller/general')
 
 module.exports = (app) => {
     app.use('/', router);
-
-    router.get('/', (req, res) => {
-        res.send('<h1>Hello from your Express.js server!!</h1>');
-    });
-
+    router.get('/', home);
 };
