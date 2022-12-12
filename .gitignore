@@ -1,3 +1,5 @@
 /node_modules
-/.env
+.env
+pg_hba.conf
+postgresql.conf
 /codecademy-ecommerce-rest-api-master

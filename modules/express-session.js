@@ -7,7 +7,9 @@ const bodyParser = require('body-parser');
 const session = require("express-session");
 const store   = new session.MemoryStore(); // used in development only !!!
 
-const { SECRET, NODE_ENV } = require('../config');
+const helmet = require('helmet');
+
+const { SECRET, NODE_ENV } = require('../model/config');
 
 module.exports = (app) => {
 
@@ -22,6 +24,8 @@ module.exports = (app) => {
 
   app.use(bodyParser.urlencoded({ extended: true,}));
 
+  app.use(helmet());
+
   app.use(
     session({
       secret           : SECRET,
@@ -29,7 +33,8 @@ module.exports = (app) => {
       saveUninitialized: false,
       cookie           : { maxAge: 1000 * 60 * 60 * 24, 
                            secure: NODE_ENV === 'PRODUCTION', 
-                           sameSite: "none" },
+                           sameSite: "none",
+                           httpsOnly: true },
       store,
     })
   );

@@ -24,7 +24,7 @@ module.exports = (app) => {
     passport.use(
         new LocalStrategy(async function (username, password, done) {
           try {
-            const/*--------- */user = await sign_in({email:username, password});
+            const/*----------*/user = await sign_in({email:username, password});
             return done (null, user);
 
           } catch      (err) {

@@ -8,11 +8,12 @@ exports.authPage = (req, res) => {
 
 exports.signUp = async (req, res, next) => {
     try {
-
-        const                          data = req.body;
-        const response = await sign_up(data);
-        res.status(200).send(response);
-
+      
+      const/*-----------------------------*/{ user_name, email, password, date_of_birth } = req.body;
+      const/*----------------------*/data = { user_name, email, password, date_of_birth };
+      const response = await sign_up(data);
+      res.status(200).send(response);
+      
     } catch (err) {  
       next  (err);
     }
@@ -37,7 +38,7 @@ exports.signOut = async (req, res, next) => {
       const   notSoEmptyCart        = await  loadCartItems(user_id);
       if     (notSoEmptyCart.length === 0) { deleteCart   (user_id); }
 
-      //actually logout
+      //actually logout----------
       req.logout(function(err) {
         if (err)
           { return next(err); }

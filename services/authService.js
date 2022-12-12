@@ -1,5 +1,6 @@
 const { getUserByEmail, createUser } = require('../queiries/usersQueries');
-const bcrypt = require("bcrypt");
+const   bcrypt    = require("bcrypt");
+const   validator = require('validator');
 
 const randomNumber = () => { return Math.ceil(Math.random() * 19 )};
 
@@ -31,10 +32,10 @@ const comparePasswords = /*----------*/async (password,hash) => {
 async function sign_in (data) { 
   try {
     const { email, password } = data;
-    const   user/*----------*/= await getUserByEmail(email);
-    
-    if (!user) {
-      const err        = new Error('Incorrect email');
+
+    const user/*-----*/= await getUserByEmail(email);
+    if  (!user) {
+      const err        = new Error('Email does not exist');
             err.status = 401;
       throw err;
     };
@@ -55,7 +56,7 @@ async function sign_in (data) {
 
 async function sign_up (data) {
   try {
-    const /*------*/{ user_name, email,password,date_of_birth } = data;
+    const /*------*/{ user_name, email,password, date_of_birth } = data;
     const hash    = await passwordHash(password);
     const newData = { user_name, email, hash, date_of_birth };
     const user    = await getUserByEmail(email);

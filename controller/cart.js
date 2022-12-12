@@ -3,10 +3,11 @@ const { addItem,
         updateCartItem, 
         loadCartItems, checkout } = require('../services/cartsService');
 const { ensureAuthentication }    = require('../services/authService');
+const   validator/*-------------*/= require('validator');
 
 exports.loadCart = async (req, res, next) => {
     try {
-
+        
         const/*----------------------------------------*/{cart_id} = req.params;
         const/*------------*/result = await loadCartItems(cart_id);
         res.status(200).send(result);
