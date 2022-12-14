@@ -3,7 +3,6 @@ const { addItem,
         updateCartItem, 
         loadCartItems, checkout } = require('../services/cartsService');
 const { ensureAuthentication }    = require('../services/authService');
-const   validator/*-------------*/= require('validator');
 
 exports.loadCart = async (req, res, next) => {
     try {

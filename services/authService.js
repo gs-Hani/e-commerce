@@ -1,6 +1,5 @@
 const { getUserByEmail, createUser } = require('../queiries/usersQueries');
 const   bcrypt    = require("bcrypt");
-const   validator = require('validator');
 
 const randomNumber = () => { return Math.ceil(Math.random() * 19 )};
 
