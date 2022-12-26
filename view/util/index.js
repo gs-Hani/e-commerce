@@ -58,7 +58,7 @@ const home = async () => {
     } catch (error) { return { error }; }
 };
 
-module.exports = { home }; //=========================================================
+module.exports = { home }; //=============================================================
 
 const orders = async (cart_id) => {
     try { const  res = await fetch('/orders',{ method:'GET' });
@@ -72,7 +72,7 @@ const orderById = async (order_id) => {
     } catch (error) { return { error }; }
 };
 
-module.exports = { orders, orderById }; //===========================================
+module.exports = { orders, orderById }; //===============================================
 
 const shopPage = async () => {
     try { const  res = await fetch(`/shop`,{ method:'GET' });
