@@ -7,10 +7,10 @@ module.exports = {
     NODE_ENV: process.env.NODE_ENV,
 
     DB: {
-        user:     process.env.user,
-        host:     process.env.host,
-        database: process.env.database,
-        password: process.env.password,
-        dbport:   process.env.dbport
+        user:     process.env.DB_USER,
+        host:     process.env.DB_HOST,
+        database: process.env.DB_DATABASE,
+        password: process.env.DB_PASSWORD,
+        dbport:   process.env.DB_PORT
     }
 };

@@ -7,14 +7,14 @@ exports.authPage = (req, res) => {
 };
 
 exports.signUp = async (req, res, next) => {
+
     try {
-      
       const/*-----------------------------*/{ user_name, email, password, date_of_birth } = req.body;
       const/*----------------------*/data = { user_name, email, password, date_of_birth };
       const response = await sign_up(data);
       res.status(200).send(response);
       
-    } catch (err) {  
+    } catch (err) {
       next  (err);
     }
 }

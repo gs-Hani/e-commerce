@@ -1,4 +1,5 @@
-const { getUserByEmail, createUser } = require('../queiries/usersQueries');
+const { getUserByEmail, createUser } = require('../model/usersQueries');
+const { validateUserData } = require("../utilities/validator");
 const   bcrypt    = require("bcrypt");
 
 const randomNumber = () => { return Math.ceil(Math.random() * 19 )};
@@ -57,7 +58,7 @@ async function sign_up (data) {
   try {
     const /*------*/{ user_name, email,password, date_of_birth } = data;
     const hash    = await passwordHash(password);
-    const newData = { user_name, email, hash, date_of_birth };
+    const newData = { user_name, email,password:hash, date_of_birth };
     const user    = await getUserByEmail(email);
 
     if (user) {
@@ -65,10 +66,11 @@ async function sign_up (data) {
             err.status = 409;
       throw err;
     }
-    return createUser(newData);
+    const valData = await validateUserData(newData);
+    return/*------*/await createUser(valData);
     
   } catch (err) {
-    throw (err);
+    throw (err)
   }
   
 };

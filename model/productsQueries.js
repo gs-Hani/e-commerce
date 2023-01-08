@@ -1,4 +1,4 @@
-const db = require('../db')
+const db = require('./index');
 
 const getProducts = async () => {
   const  statment = `SELECT * FROM products ORDER BY product_id ASC`;

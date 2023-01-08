@@ -1,7 +1,7 @@
 const express  = require('express');
 const app      = express();
 
-const { PORT } = require('./config');
+const { PORT } = require('./model/config');
 
 const modules  = require('./modules/index');
 modules(app);

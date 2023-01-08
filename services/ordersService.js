@@ -1,4 +1,4 @@
-const {createNewOrder, updateOrderByIds, addItemToOrder, getOrdersById, getOrder} = require('../queiries/ordersQueries')
+const {createNewOrder, updateOrderByIds, addItemToOrder, getOrdersById, getOrder} = require('../model/ordersQueries')
 
 async function createOrder (data) {
     try { 

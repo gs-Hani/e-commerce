@@ -1,4 +1,4 @@
-const db = require('../db')
+const db = require('./index')
 
 const createNewOrder  = /*--------*/async (data) => {
   const/*------------*/{ total,user_id } = data;

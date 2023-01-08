@@ -4,7 +4,7 @@ import {
   Routes,
   Route
 } from 'react-router-dom';
-import { Registration } from './features/registration/Registration';
+import { Registration } from './features/registration/Registration & Login';
 import './App.css';
 
 const site = "placeholder";

@@ -1,16 +1,25 @@
 const validator = require('validator');
 
-exports.validateUserData = async(req, res, next) => {
+exports.validateUserData = async(data) => {
+    try {
 
-    const { user_name, email, password, date_of_birth } = req.body;
-    const new_user_name = validator.escape(user_name);
+      const { user_name, email, password, date_of_birth } = data;
+      const new_user_name = await validator.escape(user_name);
 
     //sanitization -----------------------------------
-    if (!validator.isEmail(email))        { res.status(200); res.json({ message: "Please enter a vaild email address" }); }
-    if (!validator.isDate(date_of_birth)) { res.status(200); res.json({ message: "Please enter a vaild date of birth" }); }
-
-    req.body = { user_name: new_user_name , email,password, date_of_birth };
-    next()
+      if (!validator.isEmail(email)) {
+        const err = new Error("Please enter a vaild email address");
+              err.status = 406;
+        throw err;
+      } else if (!validator.isDate(date_of_birth)) { 
+        const err = new Error("Please enter a vaild date of birth");
+              err.status = 406;
+        throw err; 
+      } else {
+        const  user = { user_name: new_user_name , email, password, date_of_birth };
+        return user;
+      }
+    } catch (error) { throw(error) };   
 };
 
 exports.validateSignIn = async(req, res, next) => {

@@ -5,7 +5,7 @@ const { addItemToCart,
         getCartById, 
         updateCart, 
         getCartItems, 
-        createCart }                            = require('../queiries/cartsQueries');
+        createCart }                            = require('../model/cartsQueries');
 const { createOrder,updateOrder, addOrderItem } = require('../services/ordersService');
 const { updateFunds }                           = require('../services/usersService');
 

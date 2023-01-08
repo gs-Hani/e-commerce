@@ -1,29 +1,3 @@
-const authPage = async () => {
-    try { const  res = await fetch('/auth',{ method:'GET' });
-          return res.json();
-    } catch (error) { return { error }; }
-};
-
-const signUp = async () => {
-    try { const  res = await fetch('/auth/sign_up',{ method:'POST' });
-          return res.json();
-    } catch (error) { return { error }; }
-};
-
-const signIn = async (form) => {
-    try { const  res = await fetch('/auth/sign_in',{ method:'POST', body:form });
-          return res.json();
-    } catch (error) { return { error }; }
-};
-
-const signOut = async (form) => {
-    try { const  res = await fetch('/auth/sign_out',{ method:'GET' });
-          return res.json();
-    } catch (error) { return { error }; }
-};
-
-module.exports = { authPage, signUp, signIn, signOut }; //====================================
-
 const loadCart = async (cart_id) => {
     try { const  res = await fetch(`/cart/${cart_id}`,{ method:'GET' });
           return res.json();

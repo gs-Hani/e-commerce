@@ -1,4 +1,4 @@
-const { getProductsBycategory, getProductById } = require('../queiries/productsQueries')
+const { getProductsBycategory, getProductById } = require('../model/productsQueries')
 
 async function searchByCategory (category) {
 

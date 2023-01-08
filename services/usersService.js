@@ -1,4 +1,4 @@
-const { getUserById, updateUser, updateCredit, deleteUser } = require('../queiries/usersQueries');
+const { getUserById, updateUser, updateCredit, deleteUser } = require('../model/usersQueries');
 
 async function userById (user_id) {
     try {
