@@ -1,5 +1,7 @@
 const { sign_up }/*---------------*/= require('../services/authService');
 const { deleteCart, loadCartItems } = require('../services/cartsService');
+const { sign_in }/*---------------*/= require('../services/authService');
+const { validateSignIn } = require('../utilities/validator');
 
 exports.authPage = (req, res) => {
     try { res.send('<h1>Hello from your AUTH page!!</h1>');
@@ -20,11 +22,11 @@ exports.signUp = async (req, res, next) => {
 }
 
 exports.signIn = async (req, res, next) => {
-      
+  
     try {
 
-      res.status(200).redirect('/shop');
-
+      res.status(200).send(req.user);
+      
     } catch (err) {
       next  (err);
     }
@@ -50,4 +52,3 @@ exports.signOut = async (req, res, next) => {
     }    
 };
 
-  

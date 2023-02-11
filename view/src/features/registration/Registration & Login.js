@@ -1,14 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import './Registration & Login.css';
 
-import { signUp } from '../../util/fetch/Registration & Login';
+import { sign_up, sign_in } from './Slice/authSlice';
 
-export const Registration = () => {
+export const RegisterOrLogin = () => {
        const [username, setUsername] = useState();
        const [email   , setEmail]    = useState();   
        const [password, setPassword] = useState();
        const [date    , setDate]     = useState();
-
+       const  navigate               = useNavigate();
+       const  dispatch               = useDispatch();
+       const { authenticated }       = useSelector(state => state.auth);
+       const { error }               = useSelector(state => state.auth);
+       useEffect(() => {
+              if   (authenticated) {navigate('/home');}
+       },[dispatch, authenticated]);
        // make minimum age required 18 years =========================================================
        const birthDay = new Date();
              birthDay.setFullYear( birthDay.getFullYear() - 18 );
@@ -27,20 +35,35 @@ export const Registration = () => {
                      document.getElementById("submit").value    = "passwords don't match";
               }  
        } 
-       // response ===================================================================================
+       // registration response ==========================================================================
        const register/*----*/= async/*---*/(username,email,password,date) => {
-              const res/*--*/= await signUp(username,email,password,date);
-              const response = await res.json();
-              console.log(response);
-              document.getElementById("message").innerHTML = response.message;
+              dispatch(sign_up({username,email,password,date}));
        };
-
+       // login response =================================================================================
+       const login/*-------*/= (email,password) => {
+              dispatch(sign_in({email,password}));
+       };
+       // slide ==========================================================================================
+       const slide = () => {
+              document.getElementById("sign-in-form").style.bottom = "0";
+       };
+       // facebook response ==============================================================================
+       // const facebook/*----*/= async () => {
+       //        facebookLogin();
+              // const res/*--*/= await facebookLogin();
+              // console.log(res);
+              // const response = await res.json();
+              // if(response.type === "error") {
+              //        document.getElementById("message").innerHTML = response.message;     
+              // } else {
+              //        console.log(response);
+              //        navigate('/home');
+              // }
+       // };
     return (
-       <div className="registration&login">
+       <div className="registration_login">
             <h1>Hello to the registration & login page !!</h1>
-            <form id       ="sign-up form"
-              //     action   ="/placeholder"
-              //     method   ="post"
+            <form id ="sign-up-form"
                   onSubmit ={(e) => { e.preventDefault(); register(username,email,password,date);}}
               >
               <h2>Sign UP</h2>
@@ -58,7 +81,7 @@ export const Registration = () => {
                      id          ="email"
                      name        ="email"
                      placeholder ="example@emailprovider.com"
-                     onChange    ={(e) =>  setEmail(e.target.value)}
+                     onChange    ={(e) => setEmail(e.target.value)}
                      size        ="25"
                      autoComplete="on"
                      required />
@@ -92,22 +115,26 @@ export const Registration = () => {
                      id       ="submit"
                      value    ="Register"
               />
-              <span id = "message" ></span> 
             </form>
-            <form>
+            {/*========================================================================================*/}
+            <form id ="sign-in-form"
+                  onSubmit ={(e) => {e.preventDefault(); login(email,password);}}
+              >
               <h2>Sign IN</h2>
               <input type        ="email"
                      id          ="Email"
                      name        ="email"
                      placeholder ="example@emailprovider.com"
+                     onChange    ={(e) =>  setEmail(e.target.value)}
                      size        ="25"
-                     autoComplete="off"
+                     autoComplete="on"
                      required />
 
               <input type        ="password"
                      id          ="Password"
                      name        ="password"
                      placeholder ="password"
+                     onChange    ={(e) => setPassword(e.target.value)}
                      minLength   ="8" 
                      maxLength   ="32"
                      autoComplete="off" 
@@ -116,8 +143,22 @@ export const Registration = () => {
               <input type     ="submit"
                      id       ="Submit"
                      value    ="Log in"
-              />       
+              />
+
+              <button type    ="button"
+                      id      ="slide"
+                      onClick ={() => slide()}>
+                      no account?
+              </button>
+               
             </form>
+            {/* <div>
+              <button type="button" onClick={() => facebook()}>Continue with Facebook</button>
+              <button type="button" href="/auth/google"  >Continue with Google</button>
+            </div> */}
+              {
+                error && <span>{error}</span>
+              }
        </div>
     );
 };

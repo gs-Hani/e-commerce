@@ -4,6 +4,7 @@ const getProducts = async () => {
   const  statment = `SELECT * FROM products ORDER BY product_id ASC`;
   const  result   = await db.query(statment);
   if   (!result) { throw error }
+  console.log(result.rows);
   return result.rows;
 };
 
@@ -23,6 +24,14 @@ const getProductById = async (product_id) => {
 
   if   (!result) { throw error }
   return result.rows[0];
+};
+
+const getCategories = async () => {
+  const statment    = 'SELECT DISTINCT category FROM products ORDER BY category ASC';
+  const result      =  await db.query(statment);
+
+  if   (!result) { throw error }
+  return result.rows;
 };
 
 const createProduct = (request, response) => {
@@ -76,6 +85,7 @@ module.exports = {
   getProducts, 
   getProductsBycategory,
   getProductById,
+  getCategories,
   createProduct,
   updateProduct,
   deleteProduct

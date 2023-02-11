@@ -1,8 +1,14 @@
 const morgan       = require('morgan');
 const errorHandler = require('errorhandler');
 
-const cors       = require('cors');
-const bodyParser = require('body-parser');
+const cors        =  require('cors');
+const corsOptions = {
+  origin:true, 
+  credentials:true,            //access-control-allow-credentials:true
+  preflightContinue:true,
+  optionSuccessStatus:200,
+}
+const bodyParser  =  require('body-parser');
 
 const session = require("express-session");
 const store   = new session.MemoryStore(); // used in development only !!!
@@ -18,13 +24,13 @@ module.exports = (app) => {
     app.use(errorHandler());
   }
   
-  app.use(cors());
+  app.use(cors(corsOptions));
   
   app.use(bodyParser.json());
 
   app.use(bodyParser.urlencoded({ extended: true,}));
 
-  app.use(helmet());
+  app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
   app.use(
     session({

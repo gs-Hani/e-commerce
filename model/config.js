@@ -12,5 +12,11 @@ module.exports = {
         database: process.env.DB_DATABASE,
         password: process.env.DB_PASSWORD,
         dbport:   process.env.DB_PORT
+    },
+
+    FACEBOOK: {
+        appId:       process.env.FACEBOOK_CONSUMER_KEY,
+        secret:      process.env.FACEBOOK_CONSUMER_SECRET,
+        callbackUrl: process.env.FACEBOOK_CALLBACK_URL
     }
 };

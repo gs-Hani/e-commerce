@@ -13,7 +13,7 @@ const passwordHash = async (password) => {
     return hash;
 
   } catch (err) {
-    next  (err);
+    throw  err;
   }
   return null
 };
@@ -24,7 +24,7 @@ const comparePasswords = /*----------*/async (password,hash) => {
     return matchFound;
     
   } catch (err) {
-    next  (err);
+    throw  err;
   }
   return false;
 };
@@ -34,14 +34,15 @@ async function sign_in (data) {
     const { email, password } = data;
 
     const user/*-----*/= await getUserByEmail(email);
+
     if  (!user) {
-      const err        = new Error('Email does not exist');
+      const err        = new Error('Email or password is incorrect');
             err.status = 401;
       throw err;
     };
 
     if (!comparePasswords (password, user.password)) {
-      const err = new Error('Incorrect password');
+      const err        = new Error('Email or password is incorrect');
             err.status = 401;
       throw err;
     }
@@ -49,7 +50,7 @@ async function sign_in (data) {
     return user;  
 
   } catch (err) {
-    next  (err);
+    throw  err;
   }
   
 };
@@ -70,9 +71,17 @@ async function sign_up (data) {
     return/*------*/await createUser(valData);
     
   } catch (err) {
-    throw (err)
+    throw  err;
   }
   
+};
+
+async function facebookLogin (profile) {
+  try {
+
+  } catch (err) {
+    throw  err;
+  }
 };
 
 async function ensureAuthentication (req) {
@@ -84,6 +93,7 @@ async function ensureAuthentication (req) {
 module.exports = {
     sign_in,
     sign_up,
+    facebookLogin,
     ensureAuthentication,
     passwordHash
 };

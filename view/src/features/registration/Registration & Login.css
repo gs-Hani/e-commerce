@@ -1,0 +1,60 @@
+.registration_login {
+    padding: 0 10%;
+}
+
+form {
+    background-color: white;
+    margin: 20px auto
+}
+
+input {
+    margin: 4px 0;
+    background: rgba(0, 0, 0, 0);
+    border: 0;
+    border-bottom: 1px solid;
+    width: 100%
+}
+
+input:focus {
+    background-color: rgba(0, 0, 0, 0);
+    outline: none;
+}
+
+#sign-up-form, #sign-in-form {
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+    height: 250px;
+    align-items: center;
+    padding: 25px;
+    width: 250px;
+    
+}
+
+#sign-up-form {
+    box-shadow: var(--inner-shadow);
+}
+
+#sign-in-form {
+    box-shadow: var(--outer-shadow);
+    position: relative;
+    bottom: 320px;
+    transition: all 1s ease;
+}
+
+#submit, #Submit {
+    border: 1px solid;
+    border-radius: 5px;
+    width: 75px;
+}
+
+#submit, #Submit, #slide:hover {
+    cursor: pointer;
+}
+
+#slide {
+    align-self: flex-end;
+    background-color: rgba(0, 0, 0, 0);
+    border: 0px;
+    color: var(--shadow-color);
+}

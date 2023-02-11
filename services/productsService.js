@@ -1,4 +1,22 @@
-const { getProductsBycategory, getProductById } = require('../model/productsQueries')
+const { getProducts,
+        getProductsBycategory, 
+        getProductById,
+        getCategories } = require('../model/productsQueries')
+
+async function allProducts () {
+    try {
+      const foundProducts = await getProducts();
+      if  (!foundProducts) {
+        const err        = new Error('Oops, something went wrong!');
+              err.status = 401;
+        throw err;
+      };
+      return foundProducts;
+
+    } catch (err) {
+      throw (err)
+    }
+};
 
 async function searchByCategory (category) {
 
@@ -31,7 +49,24 @@ async function searchById (product_id) {
     }
 };
 
+async function allCategories () {
+  try {
+      const categories = await getCategories();
+      if  (!categories) {
+          const err        = new Error('There are no categories!');
+                err.status = 401;
+          throw err;
+        };
+        return categories;
+
+  } catch (err) {
+    throw (err);
+  }
+};
+
 module.exports = {
+    allProducts,
     searchByCategory,
-    searchById
+    searchById,
+    allCategories
 };

@@ -20,7 +20,9 @@ CREATE TABLE "products" (
   "name"        varchar(50)  NOT NULL,
   "price"       bigint       NOT NULL,
   "description" varchar(200) NOT NULL,
-  "category_id" integer      NOT NULL
+  "category"    varchar(100) NOT NULL,
+  "image"       varchar(100),
+  "thumbnail"   varchar(100)
 );
 
 CREATE TABLE "users" (

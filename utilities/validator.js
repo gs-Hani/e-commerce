@@ -22,17 +22,19 @@ exports.validateUserData = async(data) => {
     } catch (error) { throw(error) };   
 };
 
-exports.validateSignIn = async(req, res, next) => {
+exports.validateSignIn = async(data) => {
 
-    const { email, password } = req.body;
-
+    const { email, password } = data;
+    
+  //sanitization -----------------------------------
     if (!validator.isEmail(email)) {
       const err = new Error('Please insert a valid email address');
             err.status = 401;
       throw err;
-    };
-
-    next()
+    } else {
+      const  valData = { email, password };
+      return valData;
+    }
 };
 
 exports.validateCart = async(req, res, next) => {

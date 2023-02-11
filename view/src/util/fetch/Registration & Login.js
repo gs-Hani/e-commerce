@@ -21,11 +21,27 @@ const signUp = async(username,email,password,date) => {
     return response;
 };
 
-const signIn = async (form) => {
-    try { const  res = await fetch('/auth/sign_in',{ method:'POST', body:form });
-          return res.json();
-    } catch (error) { return { error }; }
+const signIn = async (email,password) => {
+    const response = await fetch(`${API_ENDPOINT}/auth/sign_in`,{
+        method:'POST', 
+        body  : JSON.stringify({
+                username: email,
+                password: password,    
+        }),
+        headers: {
+            "Content-Type": "application/json"
+        } });
+    return response;
 };
+
+// const facebookLogin = async () => {
+//     const  response = await fetch(`${API_ENDPOINT}/auth/facebook`, { 
+//         method:'GET',
+//         headers: {
+//             "Content-Type": "application/json"
+//         } });
+//     return response;
+// };
 
 const signOut = async () => {
     try { const  res = await fetch('/auth/sign_out',{ method:'GET' });

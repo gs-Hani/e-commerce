@@ -1,7 +1,6 @@
 const   express = require('express');
 const   router  = express.Router();
 const { authPage, signUp, signIn, signOut } = require ('../controller/auth');
-const { validateUserData, validateSignIn }  = require ('../utilities/validator');
 
 module.exports = (app, passport) => {
 
@@ -9,6 +8,10 @@ module.exports = (app, passport) => {
 
     router.get ('/', authPage);
     router.post('/sign_up', signUp);
-    router.post("/sign_in",validateSignIn, passport.authenticate('local'), signIn);
+    router.post("/sign_in",/*-------*/passport.authenticate('local'), signIn);
+    router.get ("/facebook",/*------*/passport.authenticate('facebook'));
+    router.get ("/facebook/callback", passport.authenticate('facebook', { failureRedirect: '/' }),
+    async (req, res) => {res.redirect('/home');});
+    router.get ("/google",  );
     router.get ("/sign_out", signOut );
 };

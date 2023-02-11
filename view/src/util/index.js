@@ -34,7 +34,7 @@ const home = async () => {
 
 module.exports = { home }; //=============================================================
 
-const orders = async (cart_id) => {
+const orders = async () => {
     try { const  res = await fetch('/orders',{ method:'GET' });
           return res.json();
     } catch (error) { return { error }; }
@@ -47,24 +47,6 @@ const orderById = async (order_id) => {
 };
 
 module.exports = { orders, orderById }; //===============================================
-
-const shopPage = async () => {
-    try { const  res = await fetch(`/shop`,{ method:'GET' });
-          return res.json();
-    } catch (error) { return { error }; }
-};
-const products = async () => {
-    try { const  res = await fetch(`/shop/products`,{ method:'GET' });
-          return res.json();
-    } catch (error) { return { error }; }
-};
-const productById = async (product_id) => {
-    try { const  res = await fetch(`/shop/products/${product_id}`,{ method:'GET' });
-          return res.json();
-    } catch (error) { return { error }; }
-};
-
-module.exports = { shopPage, products, productById }; //=================================
 
 const userById = async (user_id) => {
     try { const  res = await fetch(`/users/${user_id}`,{ method:'GET' });

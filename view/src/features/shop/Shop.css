@@ -1,0 +1,119 @@
+
+/*the products*/
+
+#shop {
+    display: grid;
+    grid-template-columns: 2fr 9fr 1fr;
+}
+
+.products {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+}
+
+.productCard {
+    background-blend-mode: lighten;
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--outer-shadow);
+    flex:none;
+    height: fit-content;
+    margin: 10px 0px;
+    padding: 30px 10px;
+    width: 200px;
+}
+
+.productCard > h3 {
+    margin: 10px 0px;
+    border: 0;
+    border-bottom: 1px;
+    border-color: rgba(0,0,0,1);
+    border-style: solid;
+    height: 45px;
+    padding: 10px 0px;
+}
+
+.productCard-footer {
+    align-items: center;
+    display: flex;
+    justify-content: space-around;
+}
+
+.kartImage {
+    height:100%;
+    width: 100%;
+}
+
+.kartButton {
+    background-color: var(--background);
+    border-radius: 5px;
+    border-width: 0;
+    height: 30px;
+    padding: 2px;
+    transition: all 200ms;
+    width:auto
+}
+
+.kartButton:hover {
+    transform: scale(1.25);
+}
+
+/*categories*/
+
+ul {
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    height: fit-content;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    padding: 0 0 10px 0;
+    width: fit-content;
+    background: rgb(240, 240, 240);
+    box-shadow: inset 10px 10px 20px rgba(1, 21, 46, 0.25);
+}
+
+ul li {
+    position: relative;
+    list-style: none;
+    text-align: center;
+    margin: 15px;
+}
+
+ul li label {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+}
+
+ul li label input[type=checkbox] {
+    position: absolute;
+    opacity: 0;
+    width: 5px;
+}
+
+ul li label :checked ~ .category-box {
+    box-shadow: inset -2px -2px 5px white, inset 3px 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+ul li label :checked ~ .category-box .category-text {
+    transform: scale(0.95);
+}
+
+ul li label .category-box {
+    width: 150px;
+    height: min-content;
+    background: rgb(240, 240, 240);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: -2px -2px 5px white, 3px 3px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+/* ul li label .category-box .category-text {
+    font-size: 30px;
+    color: #6a9bd8;
+} */

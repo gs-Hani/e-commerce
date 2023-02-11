@@ -16,7 +16,7 @@ const getUserByEmail = async (email) => {
     const result       = await db.query(statement, values);
 
     if (result.rows?.length) {
-    return result.rows[0]
+      return result.rows[0];
     };
 
     return null;
@@ -24,6 +24,8 @@ const getUserByEmail = async (email) => {
   } catch (error) { throw error }
   
 };
+
+// const getUserByFacebookId = async (id)
 
 const createUser = async (data) => {
   const { user_name, email, password, date_of_birth } = data;

@@ -4,10 +4,11 @@ import {
   Routes,
   Route
 } from 'react-router-dom';
-import { Registration } from './features/registration/Registration & Login';
-import './App.css';
 
-const site = "placeholder";
+import { RegisterOrLogin } from './features/registration/Registration & Login';
+import { Shop }            from './features/shop/Shop';
+
+import './App.css';
 
 function App() {
   
@@ -20,7 +21,8 @@ function App() {
         </aside>  */}
         <main>
           <Routes>
-            <Route exact path={`/${site}`} element={<Registration/>}/>
+            <Route exact path={`/auth`} element={<RegisterOrLogin/>}/>
+            <Route exact path={`/`}     element={<Shop/>}           />
           </Routes>
         </main> 
           
