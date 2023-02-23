@@ -1,9 +1,9 @@
 
-/*the products*/
+/* the products */
 
 #shop {
     display: grid;
-    grid-template-columns: 2fr 9fr 1fr;
+    grid-template-columns: 1fr 9fr 1fr;
 }
 
 .products {
@@ -40,12 +40,12 @@
     justify-content: space-around;
 }
 
-.kartImage {
+.cartImage {
     height:100%;
     width: 100%;
 }
 
-.kartButton {
+.cartButton {
     background-color: var(--background);
     border-radius: 5px;
     border-width: 0;
@@ -55,23 +55,25 @@
     width:auto
 }
 
-.kartButton:hover {
+.cartButton:hover {
     transform: scale(1.25);
 }
 
-/*categories*/
+/* categories */
 
 ul {
-    position: relative;
-    justify-content: center;
     align-items: center;
+    background: rgb(240, 240, 240);
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    box-shadow: inset 10px 10px 20px rgba(1, 21, 46, 0.25);
     flex-wrap: wrap;
     height: fit-content;
-    border-radius: 0 var(--border-radius) var(--border-radius) 0;
-    padding: 0 0 10px 0;
-    width: fit-content;
-    background: rgb(240, 240, 240);
-    box-shadow: inset 10px 10px 20px rgba(1, 21, 46, 0.25);
+    justify-content: center;
+    margin: 10px 0;
+    padding: 0;
+    position: sticky;
+    top: 10px;
+    width: 100%; 
 }
 
 ul li {
@@ -90,8 +92,8 @@ ul li label {
 
 ul li label input[type=checkbox] {
     position: absolute;
-    opacity: 0;
-    width: 5px;
+    opacity: 100%;
+    width: 1px;
 }
 
 ul li label :checked ~ .category-box {
@@ -113,7 +115,35 @@ ul li label .category-box {
     border-radius: 10px;
 }
 
-/* ul li label .category-box .category-text {
-    font-size: 30px;
-    color: #6a9bd8;
-} */
+/* cart */
+
+#shop-cart {
+    border-radius: var(--border-radius) 0 0 var(--border-radius) ;
+    display: flex;
+    justify-content: flex-end;
+    right:0;
+    transition: all 200ms;
+}
+
+#shop-cart li {
+    margin: 5px 0;
+}
+
+#shop-cart li div{
+    display: flex;
+    justify-content: flex-end;
+}
+
+h2{
+    margin: 10px auto;
+}
+
+#shop-cart img {
+    width: 75%;
+    border-radius: var(--border-radius) 0 0 var(--border-radius) ;
+}
+
+#shop-cart img:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+}

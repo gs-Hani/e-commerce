@@ -7,11 +7,11 @@ module.exports = (app, passport) => {
     app.use('/auth', router);
 
     router.get ('/', authPage);
-    router.post('/sign_up', signUp);
-    router.post("/sign_in",/*-------*/passport.authenticate('local'), signIn);
+    router.post('/sign_up',/*--------------------------------------*/signUp);
+    router.post("/sign_in",/*-------*/passport.authenticate('local'),signIn);
+    router.post("/sign_out",/*-------------------------------------*/signOut);
     router.get ("/facebook",/*------*/passport.authenticate('facebook'));
     router.get ("/facebook/callback", passport.authenticate('facebook', { failureRedirect: '/' }),
-    async (req, res) => {res.redirect('/home');});
+    async (req, res) => {res.redirect('/');});
     router.get ("/google",  );
-    router.get ("/sign_out", signOut );
 };

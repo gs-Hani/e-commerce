@@ -9,18 +9,39 @@ const { addItemToCart,
 const { createOrder,updateOrder, addOrderItem } = require('../services/ordersService');
 const { updateFunds }                           = require('../services/usersService');
 
+async function checkCart (user_id) {
+  try {
+
+    let          cart = await getCartById(user_id);
+    if  (!cart) {cart = await createCart (user_id)};
+
+    if  (!cart) {
+      const err        = new Error('Cart could not be created');
+            err.status = 502;
+      throw err;
+    };
+
+    return cart;
+
+  } catch (err) {
+    throw (err) };
+};
+
 async function loadCartItems (cart_id) {
     try {
-        const loadedCart = await getCartItems(cart_id);
-        if  (!loadedCart) {
-            const err        = new Error('could not load cart');
-                  err.status = 502;
-            throw err;
-          };
+
+        let                 loadedCart = await checkCart(cart_id);
+        if   (loadedCart) { loadedCart = await getCartItems(cart_id) };
+
+        if   (loadedCart === [] || loadedCart) {
           return loadedCart;
+        } else {
+          const err        = new Error('Could not load cart');
+                err.status = 502;
+          throw err;
+        }
     } catch (err) {
-      throw (err);
-    } 
+      throw (err) }; 
 };
 
 async function addItem (data) {
@@ -40,7 +61,7 @@ async function addItem (data) {
         return addedItem;
     } catch (err) {
       throw (err);
-    } 
+} 
 };
 
 async function removeItem (data) {
@@ -125,6 +146,7 @@ async function checkout (data) {
 };
 
 module.exports = {
+    checkCart,
     addItem,
     removeItem,
     deleteCart,

@@ -40,7 +40,7 @@ const getCartById = async (cart_id) => {
   const statement = `SELECT * FROM carts WHERE cart_id = $1`;
 
   const  result   = await db.query(statement, values);
-  if   (!result) { throw error }
+  if   (!result) { throw error };
   return result.rows[0];
 };
 
@@ -53,8 +53,7 @@ const getCartItems = async (cart_id) => {
                       WHERE cart_id = $1`;
 
   const  result    = await db.query(statement, values);
-  if   (!result)   { throw error }
-  return result.rows;
+  if    (result.rows === [] || result.rows) {return result.rows} else { throw error }
 };
 
 const updateCart  = /*------------------------*/async (data) => {
@@ -69,21 +68,21 @@ const updateCart  = /*------------------------*/async (data) => {
 
 const eraseCart   = async (cart_id) => {
   const values    =       [cart_id];
-  const statement = `DELETE FROM carts WHERE cart_id = $1`;
+  const statement = `DELETE FROM carts WHERE cart_id = $1 RETURNING *`;
 
   const  result   = await db.query(statement, values);
-  if   (!result) { throw error }
-  return result;
+  if   (!result) { throw error };
+  return result.rows[0];
 };
 
 const createCart    =       async (data) => {
-  const              { cart_id } = data;
+  const                cart_id   = data;
   const  values     = [cart_id];
   const  statement  = `INSERT INTO carts (cart_id) VALUES ($1) RETURNING *`;
 
   const  result     = await db.query(statement, values);
-  if   (!result)    { throw error }
-  return result;
+  if   (!result)    { throw error };
+  return result.rows[0];
 };
 
 module.exports = {

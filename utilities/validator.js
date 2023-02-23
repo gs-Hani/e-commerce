@@ -43,8 +43,8 @@ exports.validateCart = async(req, res, next) => {
   if (!validator.isInt(cart_id)) {
     res.status(200);
     res.json({ message: "Please insert a cart Id" }); 
-  }
-
+  } else { next() };
+  
 };
 
 exports.validateProduct = async(req, res, next) => {
@@ -53,7 +53,7 @@ exports.validateProduct = async(req, res, next) => {
   if (!validator.isInt(product_id)) {
     res.status(200);
     res.json({ message: "Please insert a product Id" }); 
-  }
+  } else { next() };
 
 };
 
@@ -63,7 +63,7 @@ exports.validateOrder = async(req, res, next) => {
   if (!validator.isInt(order_id)) {
     res.status(200);
     res.json({ message: "Please insert an order Id" }); 
-  }
+  } else { next() };
 
 };
 
@@ -73,6 +73,6 @@ exports.validateUser = async(req, res, next) => {
   if (!validator.isInt(user_id)) {
     res.status(200);
     res.json({ message: "Please insert a user Id" }); 
-  }
+  } else { next() };
 
 };

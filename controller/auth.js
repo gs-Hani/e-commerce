@@ -36,15 +36,16 @@ exports.signOut = async (req, res, next) => {
     try {
 
       //check if the cart is empty to automatically delete it
-      const { user_id }             = req.user; 
-      const   notSoEmptyCart        = await  loadCartItems(user_id);
-      if     (notSoEmptyCart.length === 0) { deleteCart   (user_id); }
+      const { user_id }             = req.body;
+      let     notSoEmptyCart        = await  loadCartItems(user_id);
+      if     (notSoEmptyCart.length === 0) { 
+              notSoEmptyCart        = await deleteCart   (user_id); }
 
       //actually logout----------
       req.logout(function(err) {
         if (err)
           { return next(err); }
-        res.status(200).redirect('/');
+        res.status(200).send(notSoEmptyCart);
       });
 
     } catch (err) {  

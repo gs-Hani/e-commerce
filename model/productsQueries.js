@@ -4,7 +4,6 @@ const getProducts = async () => {
   const  statment = `SELECT * FROM products ORDER BY product_id ASC`;
   const  result   = await db.query(statment);
   if   (!result) { throw error }
-  console.log(result.rows);
   return result.rows;
 };
 

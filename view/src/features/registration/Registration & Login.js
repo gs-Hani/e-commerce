@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import   React, { useEffect, useState }      from 'react';
+import          { useDispatch, useSelector } from 'react-redux';
+import          { useNavigate }              from 'react-router-dom';
 import './Registration & Login.css';
 
 import { sign_up, sign_in } from './Slice/authSlice';
@@ -15,8 +15,8 @@ export const RegisterOrLogin = () => {
        const { authenticated }       = useSelector(state => state.auth);
        const { error }               = useSelector(state => state.auth);
        useEffect(() => {
-              if   (authenticated) {navigate('/home');}
-       },[dispatch, authenticated]);
+         if(authenticated) {navigate('/');}
+       },  [authenticated]);
        // make minimum age required 18 years =========================================================
        const birthDay = new Date();
              birthDay.setFullYear( birthDay.getFullYear() - 18 );
@@ -36,7 +36,7 @@ export const RegisterOrLogin = () => {
               }  
        } 
        // registration response ==========================================================================
-       const register/*----*/= async/*---*/(username,email,password,date) => {
+       const register = async  (username,email,password,date) => {
               dispatch(sign_up({username,email,password,date}));
        };
        // login response =================================================================================

@@ -18,7 +18,8 @@ const signUp = async(username,email,password,date) => {
         headers: {
             "Content-Type": "application/json"
         } });
-    return response;
+    const  json = await response.json();
+    return json;
 };
 
 const signIn = async (email,password) => {
@@ -31,7 +32,8 @@ const signIn = async (email,password) => {
         headers: {
             "Content-Type": "application/json"
         } });
-    return response;
+    const  json = await response.json();
+    return json;
 };
 
 // const facebookLogin = async () => {
@@ -43,10 +45,15 @@ const signIn = async (email,password) => {
 //     return response;
 // };
 
-const signOut = async () => {
-    try { const  res = await fetch('/auth/sign_out',{ method:'GET' });
-          return res.json();
-    } catch (error) { return { error }; }
+const signOut = async (user) => {
+    const res = await fetch(`${API_ENDPOINT}/auth/sign_out`,{ 
+        method:'POST',
+        body:  JSON.stringify({...user}),
+        headers: {
+            "Content-Type": "application/json"
+            } });
+    const  json = await res.json();
+    return json;
 };
 
 module.exports = { authPage, signUp, signIn, signOut }; //====================================

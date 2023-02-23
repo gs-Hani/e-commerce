@@ -38,7 +38,7 @@ const createUser = async (data) => {
   } else if (!Array.isArray(result.rows) || result.rows.length < 1) {
     return null
   }
-  return {message:"Welcome aboard!!", status:"200"};
+  return result.rows[0];
 };
 
 const updateUser = async (data) => {

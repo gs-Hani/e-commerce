@@ -46,7 +46,6 @@ module.exports = (app) => {
       }, 
       async (accessToken, refreshToken, profile, done) => {
         try {
-          console.log(profile);
           // const  user = await facebookLogin(profile);
           return done(null, user);
         } catch      (err) {

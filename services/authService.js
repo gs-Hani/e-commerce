@@ -15,7 +15,6 @@ const passwordHash = async (password) => {
   } catch (err) {
     throw  err;
   }
-  return null
 };
 
 const comparePasswords = /*----------*/async (password,hash) => {
@@ -26,7 +25,6 @@ const comparePasswords = /*----------*/async (password,hash) => {
   } catch (err) {
     throw  err;
   }
-  return false;
 };
 
 async function sign_in (data) { 

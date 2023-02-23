@@ -12,7 +12,7 @@ module.exports = {
 
     async query(text, params, cb) {
       const start    = Date.now()
-      const res      = await pool.query(text, params, cb)
+      const res      = pool.query(text, params, cb)
       const duration = Date.now() - start
       console.log('executed query', { text, duration })
       return res

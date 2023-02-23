@@ -5,8 +5,10 @@ import {
   Route
 } from 'react-router-dom';
 
+import { Header }          from './components/header/header';
 import { RegisterOrLogin } from './features/registration/Registration & Login';
 import { Shop }            from './features/shop/Shop';
+import { DetailedProduct } from './features/detailedProduct/DetailedProduct';
 
 import './App.css';
 
@@ -15,14 +17,12 @@ function App() {
   return (
     <div className="App"> 
       <Router className='Router'>
-        {/* <Header id='Header'/> */}
-        {/* <aside>
-          <Subreddits />
-        </aside>  */}
+        <Header id='Header'/>
         <main>
           <Routes>
-            <Route exact path={`/auth`} element={<RegisterOrLogin/>}/>
-            <Route exact path={`/`}     element={<Shop/>}           />
+            <Route exact path="/auth"       element={<RegisterOrLogin/>}/>
+            <Route       path="/"           element={<Shop/>}           />
+            <Route       path="/:productId" element={<DetailedProduct/>}/>
           </Routes>
         </main> 
           
