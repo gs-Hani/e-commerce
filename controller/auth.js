@@ -1,12 +1,27 @@
 const { sign_up }/*---------------*/= require('../services/authService');
 const { deleteCart, loadCartItems } = require('../services/cartsService');
-const { sign_in }/*---------------*/= require('../services/authService');
-const { validateSignIn } = require('../utilities/validator');
 
 exports.authPage = (req, res) => {
     try { res.send('<h1>Hello from your AUTH page!!</h1>');
     } catch (error) { return res.status(400).json({ error }); }
 };
+
+exports.isAuthenticated = (req,res,next) => {
+
+  try {
+
+    if (req.session.user) {
+      res.status(200).send(req.session.user);
+    } else {
+      // console.log(req.session)
+      res.status(401)//.send(JSON.stringify("Unauthorized"))
+    }
+    
+  } catch (err) {
+    next  (err);
+  }
+  
+}
 
 exports.signUp = async (req, res, next) => {
 
@@ -24,7 +39,8 @@ exports.signUp = async (req, res, next) => {
 exports.signIn = async (req, res, next) => {
   
     try {
-
+      req.session.user   = req.user;
+      console.log(req.session);
       res.status(200).send(req.user);
       
     } catch (err) {
@@ -37,7 +53,7 @@ exports.signOut = async (req, res, next) => {
 
       //check if the cart is empty to automatically delete it
       const { user_id }             = req.body;
-      let     notSoEmptyCart        = await  loadCartItems(user_id);
+      let     notSoEmptyCart        = await loadCartItems(user_id);
       if     (notSoEmptyCart.length === 0) { 
               notSoEmptyCart        = await deleteCart   (user_id); }
 

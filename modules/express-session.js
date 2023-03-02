@@ -3,7 +3,7 @@ const errorHandler = require('errorhandler');
 
 const cors        =  require('cors');
 const corsOptions = {
-  origin:true, 
+  origin:'http://localhost:3000', 
   credentials:true,            //access-control-allow-credentials:true
   preflightContinue:true,
   optionSuccessStatus:200,
@@ -28,9 +28,11 @@ module.exports = (app) => {
   
   app.use(bodyParser.json());
 
-  app.use(bodyParser.urlencoded({ extended: true,}));
+  app.use(bodyParser.urlencoded({ extended: true,})); 
 
   app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
+
+  app.set('trust proxy', 1);
 
   app.use(
     session({
@@ -38,10 +40,11 @@ module.exports = (app) => {
       resave           : false,
       saveUninitialized: false,
       cookie           : {
+                           path: '/',
                            maxAge: 1000 * 60 * 60 * 24, 
-                           secure: NODE_ENV === 'PRODUCTION', 
+                           secure: true, 
                            sameSite: "none",
-                           httpsOnly: true
+                           httpOnly: NODE_ENV === 'PRODUCTION'
                           },
       store,
     })

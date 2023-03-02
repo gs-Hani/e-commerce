@@ -17,7 +17,7 @@ module.exports = async (app) => {
         if(err) {
             throw (err);
         } else {
-            console.log("hello there");
+            console.log("Error handler");
             res.status(200);
         }
     });

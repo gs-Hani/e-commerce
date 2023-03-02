@@ -1,0 +1,18 @@
+.cartImage {
+    height:100%;
+    width: 100%;
+}
+
+.cartButton {
+    background-color: var(--background);
+    border-radius: 5px;
+    border-width: 0;
+    height: 30px;
+    padding: 2px;
+    transition: all 200ms;
+    width:auto
+}
+
+.cartButton:hover {
+    transform: scale(1.25);
+}

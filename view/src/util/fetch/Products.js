@@ -1,9 +1,10 @@
-const { API_ENDPOINT } = require ("../apiEndpoint");
+// const { API_ENDPOINT } = require ("../apiEndpoint");
 
 const fetchProducts = async () => {
-    const response = await fetch(`${API_ENDPOINT}/shop/products`,{
+    const response = await fetch(`/shop/products`,{
         method:'GET',
         body: null,
+        credentials: 'include',
         headers: {
             "Content-Type": "application/json"
         }
@@ -19,9 +20,10 @@ const productById = async (product_id) => {
 };
 
 const fetchCategories = async () => {
-    const response = await fetch(`${API_ENDPOINT}/shop/categories`,{
+    const response = await fetch(`/shop/categories`,{
         method:'GET',
         body: null,
+        credentials: 'include',
         headers: {
             "Content-Type": "application/json"
         }

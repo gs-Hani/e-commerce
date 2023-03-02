@@ -15,7 +15,6 @@
     "web-vitals": "^2.1.4"
   },
   "homepage": "/",
-  "proxy": "http://localhost:8000",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -47,5 +46,6 @@
     "eslint-plugin-n": "^15.6.0",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.31.11"
-  }
+  },
+  "proxy": "http://localhost:8000"
 }

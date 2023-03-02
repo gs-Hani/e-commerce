@@ -1,0 +1,37 @@
+#detailedProductCard {
+    display: grid;
+    grid-template-columns: 9fr 1fr;
+}
+
+.detailedProduct {
+    background-blend-mode: lighten;
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--outer-shadow);
+    height: fit-content;
+    margin: 10px auto;
+    padding: 30px 10px;
+    width: 50%;
+}
+
+.detailedProduct div {
+    display: inline-flex;
+    flex-direction: column;
+    flex: content;
+    padding: 0 10%;
+    text-align: left;
+    width: 80%;
+}
+
+.detailedProduct > img {
+    background-color: white;
+    height: auto;
+    margin: 20px;
+    width:50%;
+}
+
+.detailedProduct .productCard-footer {
+    flex-direction: row;
+    padding : 0;
+    width: 100%;
+}

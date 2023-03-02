@@ -1,0 +1,31 @@
+#shop-cart {
+    border-radius: var(--border-radius) 0 0 var(--border-radius) ;
+    display: flex;
+    justify-content: flex-end;
+    float: right;
+    transition: all 200ms;
+    width: 150px
+}
+
+#shop-cart li {
+    margin: 5px 0;
+}
+
+#shop-cart li div{
+    display: flex;
+    justify-content: flex-end;
+}
+
+h2{
+    margin: 10px auto;
+}
+
+#shop-cart img {
+    width: 75%;
+    border-radius: var(--border-radius) 0 0 var(--border-radius) ;
+}
+
+#shop-cart img:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+}

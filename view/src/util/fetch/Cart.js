@@ -1,8 +1,9 @@
-const { API_ENDPOINT } = require ("../apiEndpoint");
+// const { API_ENDPOINT } = require ("../apiEndpoint");
 
 const fetchCart = async (cart_id) => {
-    const  res = await fetch(`${API_ENDPOINT}/cart/${cart_id}`,{ 
+    const  res = await fetch(`/cart/${cart_id}`,{ 
         method:'GET',
+        credentials: 'include',
         body:   null,
         headers: {
             "Content-Type": "application/json"

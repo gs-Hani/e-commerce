@@ -1,8 +1,9 @@
 import React, { useEffect,useState }    from 'react';
 import { useDispatch, useSelector }     from 'react-redux';
 import { loadProducts, loadCategories } from './Slice/productsSlice';
-import { loadCart, removeFromCart }     from '../cart/Slice/cartSlice';
-import { Product } from './Product';
+import { loadCart }                     from '../cart/Slice/cartSlice';
+import { Product }                      from './Product';
+import { Cart }                         from '../cart/Cart'
 import './Shop.css';
 
 export const Shop = () => {
@@ -14,7 +15,7 @@ export const Shop = () => {
             status1,
             status2, }                    = useSelector(state => state.products);
     const { authenticated, user_id }      = useSelector(state => state.auth);
-    const { cartProducts, error, status } = useSelector(state => state.cart);
+    const { cartProducts, status }        = useSelector(state => state.cart);
     const  [filters, setFilters]                          = useState([]);
     const  [filteredProductsList,setFilteredProductsList] = useState([]);
     //===========================================================================
@@ -70,39 +71,24 @@ export const Shop = () => {
         }
     }
     //===========================================================================
-    const cartProductsList = (cartProducts, error, status) => {
-        if      (status === 'loading') { return (<p>...Loading</p>); }
-        else if (status === 'failed')  { return (<p>{error}</p>); }
-        else    {
-            return cartProducts.map((product,index) => {
-                return <li key ={index}>
-                        <div onClick={() => dispatch(removeFromCart(product))}>
-                            <img src={product.thumbnail}/>
-                        </div>
-                       </li>
-            })
-        }
-    }
-    //===========================================================================
     const list = filteredProductsList.length === 0 ? productsList : filteredProductsList;
     
     if        (status1 === 'loading')   { return (<p>...Loading</p>)
     } else if (status1 === 'succeeded') {
         return (
             <div id="shop">
+
                 <ul>
-                <h2>categories</h2>
+                    <h2>categories</h2>
                     {categoryList(categories,error2,status2)}
                 </ul>
+
                 <div className="products">
-                    {list.map((product) => (
-                        <Product key={product.id} product={product}/>
-                    ))}
+                    {list.map((product) => (<Product key={product.id} product={product}/>))}
                 </div>
-                <ul id='shop-cart'>
-                    <h2>cart</h2>
-                    {cartProducts && cartProductsList(cartProducts, error, status)}
-                </ul>
+
+                <Cart/>
+
             </div>
         )
     } else { { error1 && <span>{error1}</span> } }

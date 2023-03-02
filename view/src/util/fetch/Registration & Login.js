@@ -1,4 +1,4 @@
-const { API_ENDPOINT } = require ("../apiEndpoint");
+// const { API_ENDPOINT } = require ("../apiEndpoint");
 
 const authPage = async () => {
     try { const  res = await fetch('/auth',{ method:'GET' });
@@ -7,8 +7,9 @@ const authPage = async () => {
 };
 
 const signUp = async(username,email,password,date) => {
-    const response = await fetch(`${API_ENDPOINT}/auth/sign_up`, { 
+    const response = await fetch(`/auth/sign_up`, { 
         method:'POST',
+        credentials: 'include',
         body  : JSON.stringify({
                 user_name:     username,
                 email:         email,
@@ -23,8 +24,9 @@ const signUp = async(username,email,password,date) => {
 };
 
 const signIn = async (email,password) => {
-    const response = await fetch(`${API_ENDPOINT}/auth/sign_in`,{
+    const response = await fetch(`/auth/sign_in`,{
         method:'POST', 
+        credentials: 'include',
         body  : JSON.stringify({
                 username: email,
                 password: password,    
@@ -46,8 +48,9 @@ const signIn = async (email,password) => {
 // };
 
 const signOut = async (user) => {
-    const res = await fetch(`${API_ENDPOINT}/auth/sign_out`,{ 
+    const res = await fetch(`/auth/sign_out`,{ 
         method:'POST',
+        credentials: 'include',
         body:  JSON.stringify({...user}),
         headers: {
             "Content-Type": "application/json"
@@ -56,4 +59,16 @@ const signOut = async (user) => {
     return json;
 };
 
-module.exports = { authPage, signUp, signIn, signOut }; //====================================
+const isAuth  = async () => {
+    const res = await fetch(`/auth/checkauth`,{ 
+        method:'GET',
+        credentials: 'include',
+        body:   null,
+        headers: {
+            "Content-Type": "application/json"
+            } });
+    const  json = await res.json();
+    return json;
+}
+
+module.exports = { authPage, signUp, signIn, signOut, isAuth }; //================

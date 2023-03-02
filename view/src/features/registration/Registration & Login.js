@@ -62,7 +62,6 @@ export const RegisterOrLogin = () => {
        // };
     return (
        <div className="registration_login">
-            <h1>Hello to the registration & login page !!</h1>
             <form id ="sign-up-form"
                   onSubmit ={(e) => { e.preventDefault(); register(username,email,password,date);}}
               >

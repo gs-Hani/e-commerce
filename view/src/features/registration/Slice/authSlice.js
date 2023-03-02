@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { signUp, signIn, signOut }       from '../../../util/fetch/Registration & Login';
+import { signUp, signIn, signOut, isAuth }       from '../../../util/fetch/Registration & Login';
 
 const initialState = {
     authenticated: false,
@@ -13,23 +13,27 @@ const initialState = {
     status:       'idle'
 };
 
-export const   sign_up  = createAsyncThunk('auth/sign_up',       async (data) => {
-       const/*---------------------*/{ username,email,password,date } = data;
-       const   response = await signUp(username,email,password,date);
-       return  response;
+export const  sign_up  = createAsyncThunk('auth/sign_up',       async (data) => {
+       const/*--------------------*/{ username,email,password,date } = data;
+       const  response = await signUp(username,email,password,date);
+       return response;
 });
 
-export const   sign_in  = createAsyncThunk('auth/sign_in',  async (data) => {
-       const/*---------------------*/{ email, password } = data;
-       const   response = await signIn(email, password);
-       return  response;
+export const  sign_in  = createAsyncThunk('auth/sign_in',  async (data) => {
+       const/*--------------------*/{ email, password } = data;
+       const  response = await signIn(email, password);
+       return response;
 });
 
-export const   sign_out = createAsyncThunk('auth/sign_out', async (user) => {
-       const   response = await signOut(user);
-       console.log(response);
-       return  response;
+export const  sign_out = createAsyncThunk('auth/sign_out', async (user) => {
+       const  response = await signOut(user);
+       return response;
 });
+
+export const  is_Auth  = createAsyncThunk('auth/is_Auth',  async ()     => {
+       const  response = await isAuth();
+       return response
+})
 
 const authSlice = createSlice({
     name: 'auth',
@@ -89,12 +93,31 @@ const authSlice = createSlice({
             state.date_of_birth =  null;
             state.credit        =  0;
             state.status        = 'succeeded';
-            console.log("there");
         })
         .addCase(sign_out.rejected,  (state, action) => {
             state.error         =  action.error.message;
             state.status        = 'failed';
             console.log(action.error.message)
+        })
+        //Is Auth============================================
+        .addCase(is_Auth.pending,   (state)         => {
+            state.status        = 'loading';
+        })
+        .addCase(is_Auth.fulfilled, (state, action) => {
+            console.log(action.payload);
+            const {user_id,user_name,email,password,date_of_birth,credit} = action.payload;
+            state.authenticated = true;
+            state.user_id       = user_id;
+            state.user_name     = user_name;
+            state.email         = email;
+            state.password      = password;
+            state.date_of_birth = date_of_birth;
+            state.credit        = credit;
+            state.status        = 'succeeded';
+        })
+        .addCase(is_Auth.rejected,  (state, action) => {
+            state.error         =  action.error.message;
+            state.status        = 'failed';
         })
     }
 });
