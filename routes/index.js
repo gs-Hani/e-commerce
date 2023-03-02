@@ -5,9 +5,9 @@ const users   = require('./users');
 const cart    = require('./cart');
 const orders  = require('./orders');
 
-module.exports = (app, passport) => {
+module.exports = (app,passport) => {
     general      (app);
-    auth         (app, passport);
+    auth         (app,passport);
     shop         (app);
     users        (app);
     cart         (app);

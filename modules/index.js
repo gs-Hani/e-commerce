@@ -5,15 +5,15 @@ const swagger               = require('./swagger');
 
 module.exports = async (app) => {
     
-    const express_session = await express_sessionModule(app);
-    const passport        = passportModule(express_session);
+    const   express_session = await express_sessionModule(app);
+    const { App,passport }  = passportModule(express_session);
 
-    swagger(app);
+    swagger(App);
 
-    router(app, passport);
+    router(App,passport);
     
     // Error Handler
-    app.use((err, req, res, next) => {
+    App.use((err, req, res, next) => {
         if(err) {
             throw (err);
         } else {

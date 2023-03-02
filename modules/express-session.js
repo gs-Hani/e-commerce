@@ -39,13 +39,13 @@ module.exports = (app) => {
       secret           : SECRET,
       resave           : false,
       saveUninitialized: false,
-      cookie           : {
-                           path: '/',
-                           maxAge: 1000 * 60 * 60 * 24, 
-                           secure: true, 
-                           sameSite: "none",
-                           httpOnly: NODE_ENV === 'PRODUCTION'
-                          },
+      // cookie           : {
+      //                      path: '/',
+      //                      maxAge: 1000 * 60 * 60 * 24, 
+      //                      secure: true, 
+      //                      sameSite: "none",
+      //                      httpOnly: NODE_ENV === 'PRODUCTION'
+      //                     },
       store,
     })
   );

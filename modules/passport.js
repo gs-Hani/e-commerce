@@ -10,19 +10,19 @@ const { validateSignIn } = require('../utilities/validator');
 
 
 module.exports = (app) => {
-    app.use(passport.initialize());
-    app.use(passport.session());
+    app.use(passport.authenticate('session'));
     
     passport.serializeUser((user, done) => {
       done(null,user.user_id);
+      process.nextTick(function() {
+        done(null, { id: user.user_id, username: user.user_name });
+      });
     });
       
-    passport.deserializeUser(async (user_id,done) => {
-
-      const user   = await userById(user_id);
-      const credit = user.credit;
-
-      return done(null, {user_id, credit});
+    passport.deserializeUser(async (user,done) => {
+      process.nextTick(function() {
+        return done(null, user);
+      });
     });
     
     passport.use(
@@ -54,5 +54,5 @@ module.exports = (app) => {
       })
     );
 
-    return passport;
+    return {App:app,passport};
 };
