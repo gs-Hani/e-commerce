@@ -48,12 +48,17 @@ exports.validateCart = async(req, res, next) => {
 };
 
 exports.validateProduct = async(req, res, next) => {
-
-  const     { cart_id, product_id } = req.params;
-  if (!validator.isInt(product_id)) {
+  let numbers = 0;
+  req.body.forEach(product_id => {
+    if(validator.isInt(product_id)) { numbers++ }
+  })
+  if (numbers === req.body.length) {
+    console.log('validation done');
+     next() } 
+  else {
     res.status(200);
-    res.json({ message: "Please insert a product Id" }); 
-  } else { next() };
+    res.json({ message: "Please insert a product Id" });
+  };
 
 };
 

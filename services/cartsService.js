@@ -32,7 +32,7 @@ async function loadCartItems (cart_id) {
 
         let                 loadedCart = await checkCart(cart_id);
         if   (loadedCart) { loadedCart = await getCartItems(cart_id) };
-
+              loadedCart = loadedCart.map(product => product.product_id);
         if   (loadedCart === [] || loadedCart) {
           return loadedCart;
         } else {
@@ -48,16 +48,16 @@ async function addItem (data) {
     try {
         const { user_id, product_id } = data;
 
-        let     userCart              = await getCartById  (user_id);
-        
+        let   userCart                = await getCartById  (          user_id);
         if  (!userCart) { userCart    = await createCart   ({ cart_id:user_id })};
+        console.log(userCart);
         const addedItem /*---------*/ = await addItemToCart({ cart_id:user_id, product_id });
-        
         if  (!addedItem) {
             const err = new Error('Item was not added, please try again');
                   err.status = 502;
             throw err;
         };
+        console.log(addedItem);
         return addedItem;
     } catch (err) {
       throw (err);
@@ -66,7 +66,10 @@ async function addItem (data) {
 
 async function removeItem (data) {
     try {
-        const  removedItem   = await removeItemFromCart(data);
+
+        const { user_id, product_id } = data;
+        const  removedItem   = await removeItemFromCart({cart_id:user_id, product_id});
+        console.log(removedItem);
         if   (!removedItem) {
             const err        = new Error('could not remove item');
                   err.status = 502;

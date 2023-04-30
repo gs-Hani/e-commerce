@@ -16,13 +16,18 @@ const addItemToCart = async (data) => {
 };
 
 const removeItemFromCart =            async (data) => {
-  const/*--------*/{ cart_id, product_id } = data;
-  const values    = [cart_id, product_id];
-  const statement = `DELETE FROM cart_items WHERE cart_id = $1 AND product_id = $2 RETURNING *`; 
+  try {
+    const /*--------*/{ cart_id, product_id } = data;
+    const  values    = [cart_id, product_id];
+    const  statement = `DELETE FROM cart_items WHERE cart_id = $1 AND product_id = $2 RETURNING *`; 
 
-  const  result   = await db.query(statement, values);
-  if   (!result) { throw error }
-  return result.rows[0];
+    const  result   = await db.query(statement, values);
+    return result.rows[0];
+
+  } catch (err) {
+    throw (err)
+  }
+  
 };
 
 const removeِAllItemsFromCart = async (data) => {
@@ -46,7 +51,7 @@ const getCartById = async (cart_id) => {
 
 const getCartItems = async (cart_id) => {
   const values     =       [cart_id];
-  const statement  = `SELECT * 
+  const statement  = `SELECT p.product_id 
                       FROM products AS p 
                       INNER JOIN cart_items AS ci 
                       ON p.product_id = ci.product_id 

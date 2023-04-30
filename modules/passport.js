@@ -11,11 +11,29 @@ const { validateSignIn } = require('../utilities/validator');
 
 module.exports = (app) => {
     app.use(passport.authenticate('session'));
+
+    passport.use(
+      new LocalStrategy(async function (username, password, done) {
+        try {
+
+          const  valData = await validateSignIn({email:username, password});
+          const  user    = await sign_in(valData);
+          return done (null, user);
+
+        } catch      (err) {
+          return done(err);
+        }
+      })
+    );
     
     passport.serializeUser((user, done) => {
-      done(null,user.user_id);
       process.nextTick(function() {
-        done(null, { id: user.user_id, username: user.user_name });
+        done(null, { user_id:       user.user_id,
+                     user_name:     user.user_name, 
+                     email:         user.email,
+                     password:      user.password,
+                     date_of_birth: user.date_of_birth,
+                     credit:        user.credit});
       });
     });
       
@@ -24,19 +42,6 @@ module.exports = (app) => {
         return done(null, user);
       });
     });
-    
-    passport.use(
-        new LocalStrategy(async function (username, password, done) {
-          try {
-            const  valData = await validateSignIn({email:username, password});
-            const  user    = await sign_in(valData);
-            return done (null, user);
-
-          } catch      (err) {
-            return done(err);
-          }
-        })
-    );
 
     passport.use(
       new FacebookStrategy({

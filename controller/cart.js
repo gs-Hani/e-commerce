@@ -18,13 +18,11 @@ exports.loadCart = async (req, res, next) => {
 exports.addItem = async (req,res,next) => {
     try {
         const auth = await ensureAuthentication(req);
-        if  (!auth)  { res.redirect('./auth') } 
+        if  (!auth)  { next() } 
         else {
-            const { user_id }    = req.user;
-            const { product_id } = req.params;
-
-            const/*------------*/result = await addItem({user_id, product_id});
-            res.status(200).send(result);
+            const { user_id } = req.user;
+            await req.body.forEach(product_id => addItem({user_id, product_id}));
+            next()
         };
     } catch (err) { 
       next  (err) };
@@ -32,11 +30,13 @@ exports.addItem = async (req,res,next) => {
 
 exports.removeItem = async (req,res,next) => {
     try {
-
-        const { cart_id, product_id } = req.params;
-
-        const/*------------*/result = await removeItem({cart_id, product_id});
-        res.status(404).send(result);
+        const auth = await ensureAuthentication(req);
+        if  (!auth)  { next() } 
+        else {
+            const { user_id }    = req.user;
+            await req.body.forEach(product_id => removeItem({user_id, product_id}));
+            next()
+        };
 
     } catch (err) { 
       next  (err) };
@@ -65,3 +65,50 @@ exports.checkout = async (req, res, next) => {
     } catch (err) { 
       next  (err) };
 }
+
+exports.addToSession = async (req, res, next) => {
+    try {
+        console.log('request body is', req.body)
+        if(!req.session.cartProducts) { 
+            req.session.cartProducts = req.body;
+            console.log('cartProducts does not exisit so cartproducts now is...',req.session.cartProducts);
+        }
+        else {
+            console.log('changing the session cart products');
+            req.session.cartProducts.filter(index => {
+                let unique = true
+                for (let i=0; i<req.body.length; i++) {
+                    if (index === req.body[i].product_id) { unique = false ; }
+                }
+                return unique
+            });
+            req.session.cartProducts = [...req.session.cartProducts,...req.body];
+            console.log('cartProducts does exisit so cartproducts now is...',req.session.cartProducts);
+        }
+        res.status(200).send(req.session.cartProducts);
+    } catch (err) {
+      next  (err)  
+    }
+};
+
+exports.removeFromSession = async (req, res, next) => {
+    try{
+        if(req.session.cartProducts) {
+            req.session.cartProducts = req.session.cartProducts.filter(obj => {
+                obj != req.body[0]
+            })
+        }
+        res.status(200).send(req.session.cartProducts);
+    } catch (err) {
+      next  (err)
+    }
+};
+
+exports.loadSessionCart = async (req, res, next) => {
+    try {
+        if(!req.session.cartProducts) { req.session.cartProducts = []};
+        res.status(200).send(req.session.cartProducts)
+    } catch (err) {
+      next  (err)
+    }
+};

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { signUp, signIn, signOut, isAuth }       from '../../../util/fetch/Registration & Login';
+import { signUp, signIn, signOut, isAuth } from '../../../util/fetch/Registration & Login';
 
 const initialState = {
     authenticated: false,
@@ -97,14 +97,12 @@ const authSlice = createSlice({
         .addCase(sign_out.rejected,  (state, action) => {
             state.error         =  action.error.message;
             state.status        = 'failed';
-            console.log(action.error.message)
         })
         //Is Auth============================================
         .addCase(is_Auth.pending,   (state)         => {
             state.status        = 'loading';
         })
         .addCase(is_Auth.fulfilled, (state, action) => {
-            console.log(action.payload);
             const {user_id,user_name,email,password,date_of_birth,credit} = action.payload;
             state.authenticated = true;
             state.user_id       = user_id;

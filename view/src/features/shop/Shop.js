@@ -29,6 +29,7 @@ export const Shop = () => {
 
     useEffect(() => {
         if(authenticated) { dispatch(loadCart(user_id)) }
+        else              { dispatch(loadCart()) }
     },    [authenticated,   dispatch,         user_id]);
 
     useEffect(() => console.log() ,[cartProducts,status]);
@@ -72,7 +73,7 @@ export const Shop = () => {
     }
     //===========================================================================
     const list = filteredProductsList.length === 0 ? productsList : filteredProductsList;
-    
+
     if        (status1 === 'loading')   { return (<p>...Loading</p>)
     } else if (status1 === 'succeeded') {
         return (
@@ -84,7 +85,7 @@ export const Shop = () => {
                 </ul>
 
                 <div className="products">
-                    {list.map((product) => (<Product key={product.id} product={product}/>))}
+                    {list.map((product) => (<Product key={product.product_id} product={product}/>))}
                 </div>
 
                 <Cart/>

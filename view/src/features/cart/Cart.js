@@ -1,23 +1,35 @@
-import   React, { useEffect } from 'react';
+import   React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector }     from 'react-redux';
-import { removeFromCart }     from '../cart/Slice/cartSlice';
+import { removeFromCart }     from './Slice/cartSlice';
 
 import './Cart.css';
 
 export const Cart = () => {
     
-    const { cartProducts, error, status } = useSelector(state => state.cart);
-    const dispatch = useDispatch();
+    let   { cartProducts, error, status } = useSelector(state => state.cart);
+    const { productsList }  = useSelector(state => state.products);
+    const [ productsAsObjects, setproductsAsObjects ] = useState([]);
+    const   dispatch        = useDispatch();
 
-    useEffect(() => console.log() ,[cartProducts,status]);
+    useEffect(() => {
+        objectifyProducts(cartProducts);
+        console.log(productsAsObjects,status);
+    } ,[cartProducts]);
 
-    const cartProductsList = (cartProducts, error, status) => {
-        if      (status === 'loading') { return (<p>...Loading</p>); }
-        else if (status === 'failed')  { return (<p>{error}</p>); }
-        else    {
-            return cartProducts.map((product,index) => {
+    async function objectifyProducts (cartProducts) {
+        const list = await cartProducts.map(
+            product => productsList.find(
+                item => item.product_id == product));
+        setproductsAsObjects(list);
+    }
+
+    const cartProductsList = (productsAsObjects, error, status) => {
+        if      (status === 'loading')   { return (<p>...Loading</p>); }
+        else if (status === 'failed')    { return (<p>{error}</p>); }
+        else if (status === 'succeeded') {
+            return productsAsObjects.map((product,index) => {
                 return <li key ={index}>
-                        <div onClick={() => dispatch(removeFromCart(product))}>
+                        <div onClick={() => dispatch(removeFromCart({product_id:product.product_id,cartProducts}))}>
                             <img src={product.thumbnail}/>
                         </div>
                        </li>
@@ -28,7 +40,7 @@ export const Cart = () => {
     return (
         <ul id='shop-cart'>
             <h2>cart</h2>
-            {cartProducts && cartProductsList(cartProducts, error, status)}
+            {productsAsObjects && cartProductsList(productsAsObjects, error, status)}
         </ul>
     )
     

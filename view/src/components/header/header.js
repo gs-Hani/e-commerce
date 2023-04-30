@@ -12,9 +12,6 @@ import logout   from '../../util/icons/logout_FILL0_wght400_GRAD0_opsz48.svg';
 import orders   from '../../util/icons/receipt_long_FILL0_wght400_GRAD0_opsz48.svg';
 
 export const Header = () => {
-  // const   location    = useLocation();
-  // const { pathname }  = location;
-  // console.log(pathname);
 
   const dispatch = useDispatch();
 

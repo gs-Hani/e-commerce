@@ -10,11 +10,10 @@ exports.isAuthenticated = (req,res,next) => {
 
   try {
 
-    if (req.session.user) {
-      res.status(200).send(req.session.user);
+    if (req.session.passport) {
+      res.status(200).send(req.session.passport.user);
     } else {
-      // console.log(req.session)
-      res.status(401)//.send(JSON.stringify("Unauthorized"))
+      res.status(401)
     }
     
   } catch (err) {
@@ -39,8 +38,12 @@ exports.signUp = async (req, res, next) => {
 exports.signIn = async (req, res, next) => {
   
     try {
-      req.session.user   = req.user;
-      console.log(req.session);
+      // req.session.user  = req.user;
+      if (req.body.cartProducts) {
+        req.session.cartProducts = req.body.cartProducts;
+        console.log("body to session",req.session.cartProducts)
+        delete req.body.cartProducts;
+      }
       res.status(200).send(req.user);
       
     } catch (err) {

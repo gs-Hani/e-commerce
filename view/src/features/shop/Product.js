@@ -14,7 +14,7 @@ export const Product = (data) => {
             <h3>{product.name}</h3>
             <div className="productCard-footer">
                 <span>{product.price} $</span>
-                <CartButton product={product}/>
+                <CartButton product_id={product.product_id}/>
             </div>
         </div>
     );

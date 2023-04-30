@@ -14,9 +14,9 @@ export const RegisterOrLogin = () => {
        const  dispatch               = useDispatch();
        const { authenticated }       = useSelector(state => state.auth);
        const { error }               = useSelector(state => state.auth);
-       useEffect(() => {
-         if(authenticated) {navigate('/');}
-       },  [authenticated]);
+
+       useEffect(() => { if(authenticated) {navigate('/');} },  [authenticated]);
+       
        // make minimum age required 18 years =========================================================
        const birthDay = new Date();
              birthDay.setFullYear( birthDay.getFullYear() - 18 );
