@@ -6,14 +6,20 @@ const { ensureAuthentication }    = require('../services/authService');
 
 exports.loadCart = async (req, res, next) => {
     try {
-        console.log('loading DB cart');
-        const {cart_id} = req.params;
-        console.log('cart_id data type ==',typeof cart_id );
-        if(cart_id == "null") { next() }
+        const auth = await ensureAuthentication(req);
+        if  (!auth)  { res.status(200).send(req.session.cartProducts); }
         else {
+            console.log('loading DB cart');
+            const {cart_id} = req.params;
+            console.log('cart_id data type ==',typeof cart_id );
             req.body = await loadCartItems(cart_id);
-            console.log(req.body);
-            console.log('loading DB cart done');
+            req.body = req.body.map(item => item.toString());
+            console.log('loading DB cart done:',req.body);
+            req.session.cartProducts = [...new Set(req.body.concat(req.session.cartProducts))];
+            console.log('merged lists:',req.session.cartProducts);
+            const difference = req.session.cartProducts.filter(x => !req.body.includes(x));
+            console.log('difference:',difference);
+            req.body = difference;
             next();
         }
     } catch (err) { 
@@ -23,11 +29,11 @@ exports.loadCart = async (req, res, next) => {
 exports.addItem = async (req,res,next) => {
     try {
         const auth = await ensureAuthentication(req);
-        if  (!auth)  { next() } 
+        if  (!auth)  { res.status(200).send(req.session.cartProducts); } 
         else {
             const { user_id } = req.user;
             await req.body.forEach(product_id => addItem({user_id, product_id}));
-            next()
+            res.status(200).send(req.session.cartProducts);
         };
     } catch (err) { 
       next  (err) };
@@ -36,11 +42,11 @@ exports.addItem = async (req,res,next) => {
 exports.removeItem = async (req,res,next) => {
     try {
         const auth = await ensureAuthentication(req);
-        if  (!auth)  { next() } 
+        if  (!auth)  { res.status(200).send(req.session.cartProducts); } 
         else {
             const { user_id }    = req.user;
             await req.body.forEach(product_id => removeItem({user_id, product_id}));
-            next()
+            res.status(200).send(req.session.cartProducts);
         };
 
     } catch (err) { 
@@ -90,7 +96,7 @@ exports.addToSession = async (req, res, next) => {
             req.session.cartProducts = [...req.session.cartProducts,...req.body];
             console.log('cartProducts does exisit so cartproducts now is...',req.session.cartProducts);
         }
-        res.status(200).send(req.session.cartProducts);
+        next()
     } catch (err) {
       next  (err)  
     }
@@ -103,7 +109,7 @@ exports.removeFromSession = async (req, res, next) => {
                 obj != req.body[0]
             })
         }
-        res.status(200).send(req.session.cartProducts);
+        next()
     } catch (err) {
       next  (err)
     }
@@ -114,11 +120,9 @@ exports.loadSessionCart = async (req, res, next) => {
         const    {cart_id} = req.params;
         if(cart_id == "null") {
             if(!req.session.cartProducts) { req.session.cartProducts = []};
-                       res.status(200).send(req.session.cartProducts)
+            next();
         } else {
-            const cartproducts = [...new Set(req.body.concat(req.session.cartProducts))];
-            console.log('the combined cart products are...:',cartproducts);
-            res.status(200).send(cartproducts);
+            next()
         } 
     } catch (err) {
       next  (err)

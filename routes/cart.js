@@ -18,9 +18,9 @@ module.exports = (app) => {
     // router.post  ('/:product_id',                       validateProduct, addToSession);
     router.get   ('/session',                                            loadSessionCart);
     //authenticated routes ============================================================
-    router.get   ('/:cart_id',            validateCart,                  loadCart,loadSessionCart);
-    router.post  ('/addItem',                           validateProduct, addItem,    addToSession);
-    router.delete('/removeItem',                        validateProduct, removeItem, removeFromSession);
+    router.get   ('/:cart_id',            validateCart,                  loadSessionCart,loadCart,addItem);
+    router.post  ('/addItem',                           validateProduct, addToSession,addItem);
+    router.delete('/removeItem',                        validateProduct, removeFromSession,removeItem );
     router.put   ('/:cart_id/:product_id',validateCart, validateProduct, updateItem);
     router.post  ('/:cart_id/checkout',   validateCart,                  checkout);
     
