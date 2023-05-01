@@ -7,7 +7,7 @@ import { Cart }                         from '../cart/Cart'
 import './Shop.css';
 
 export const Shop = () => {
-    const dispatch = useDispatch();
+    const   dispatch = useDispatch();
     const { productsList,
             categories,
             error1,
