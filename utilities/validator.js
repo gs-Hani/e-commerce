@@ -40,10 +40,15 @@ exports.validateSignIn = async(data) => {
 exports.validateCart = async(req, res, next) => {
 
   const/*----------*/{ cart_id, product_id } = req.params;
-  if (!validator.isInt(cart_id)) {
+  console.log('validation: data type for cart_id is...:',typeof cart_id);
+  if (validator.isInt(cart_id) || cart_id != false ) {
+    console.log('validation done');
+    next()
+  } else {
+    console.log('validation failed')
     res.status(200);
     res.json({ message: "Please insert a cart Id" }); 
-  } else { next() };
+    };
   
 };
 

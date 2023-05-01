@@ -2,10 +2,10 @@
 
 const fetchCart = async (cart_id) => {
     const  res = await fetch(`/cart/${cart_id}`,{ 
-        method:'GET',
-        credentials: 'include',
-        body:   null,
-        headers: {
+        method     :'GET',
+        credentials:'include',
+        body       : null,
+        headers    :{
             "Content-Type": "application/json"
         }
     });
@@ -14,9 +14,9 @@ const fetchCart = async (cart_id) => {
 };
 const fetchSessionCart = async () => {
     const res = await fetch('/cart/session', {
-        method:'GET',
-        body: null,
-        headers: {
+        method :'GET',
+        body   : null,
+        headers:{
             "Content-Type": "application/json"
         }
     });

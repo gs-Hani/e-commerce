@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchCart, fetchSessionCart, addItem ,removeItem,// updateItem, checkout
+import { fetchCart, addItem ,removeItem,// updateItem, checkout
     } from '../../../util/fetch/Cart';
 
 const initialState = {
@@ -9,14 +9,13 @@ const initialState = {
 };
 
 export const loadCart = createAsyncThunk('cart/loadCart', async(user_id) => {
-    let response;
-    if (user_id) { response = await fetchCart(user_id); } 
-    else         { response = await fetchSessionCart(); }
+    const  response = await fetchCart(user_id);
     return response
 });
 
 export const addToCart = createAsyncThunk('cart/addToCart', async(data) => {
     const {product_id,cartProducts} = data;
+    console.log(data)
     if(!cartProducts.find(p => p == product_id)) {
         await addItem(product_id);
         return  {index:product_id, exists:false}
@@ -67,14 +66,12 @@ const cartSlice = createSlice({
         //removeFromCart==================
         .addCase(removeFromCart.fulfilled, (state,action) => {
             const { product_id,exists } =  action.payload;
-            console.log(product_id,exists);
             if(exists) { 
                 const index = state.cartProducts.indexOf(product_id); 
                 state.cartProducts.splice(index, 1);
             }
         })
         .addCase(removeFromCart.rejected, (state,action) => {
-            console.log(action.payload);
             console.log(action.error.message);
         })
     }

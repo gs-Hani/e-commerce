@@ -6,11 +6,16 @@ const { ensureAuthentication }    = require('../services/authService');
 
 exports.loadCart = async (req, res, next) => {
     try {
-        
-        const/*----------------------------------------*/{cart_id} = req.params;
-        const/*------------*/result = await loadCartItems(cart_id);
-        res.status(200).send(result);
-
+        console.log('loading DB cart');
+        const {cart_id} = req.params;
+        console.log('cart_id data type ==',typeof cart_id );
+        if(cart_id == "null") { next() }
+        else {
+            req.body = await loadCartItems(cart_id);
+            console.log(req.body);
+            console.log('loading DB cart done');
+            next();
+        }
     } catch (err) { 
       next  (err) };
 };
@@ -106,8 +111,15 @@ exports.removeFromSession = async (req, res, next) => {
 
 exports.loadSessionCart = async (req, res, next) => {
     try {
-        if(!req.session.cartProducts) { req.session.cartProducts = []};
-        res.status(200).send(req.session.cartProducts)
+        const    {cart_id} = req.params;
+        if(cart_id == "null") {
+            if(!req.session.cartProducts) { req.session.cartProducts = []};
+                       res.status(200).send(req.session.cartProducts)
+        } else {
+            const cartproducts = [...new Set(req.body.concat(req.session.cartProducts))];
+            console.log('the combined cart products are...:',cartproducts);
+            res.status(200).send(cartproducts);
+        } 
     } catch (err) {
       next  (err)
     }

@@ -28,9 +28,8 @@ export const Shop = () => {
     useEffect(() => { filter(filters); },[filters.length]);
 
     useEffect(() => {
-        if(authenticated) { dispatch(loadCart(user_id)) }
-        else              { dispatch(loadCart()) }
-    },    [authenticated,   dispatch,         user_id]);
+       dispatch(loadCart     (user_id))
+    },[dispatch,authenticated,user_id]);
 
     useEffect(() => console.log() ,[cartProducts,status]);
     //===========================================================================
