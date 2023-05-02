@@ -8,39 +8,25 @@ to be filled later...
 ## Technologies used
 
 ### Database
-- Postbird
+- Postgresql using Postbird
 
 ### Backend
-- [express](https://www.npmjs.com/package/express)
-- [express-session](https://www.npmjs.com/package/express-session)
-- [dotenv](https://www.npmjs.com/package/dotenv)
-- [pg](https://www.npmjs.com/package/pg)
-- [morgan](https://www.npmjs.com/package/morgan)
-- [errorhandler](https://www.npmjs.com/package/errorhandler)
-- [cors](https://www.npmjs.com/package/cors)
-- [body-parser](https://www.npmjs.com/package/body-parser)
-- [helmet](https://www.npmjs.com/package/helmet)
-- [passport](https://www.npmjs.com/package/passport)
-- [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express)
-- [js-yaml](https://www.npmjs.com/package/js-yaml)
-- fs
-- [path](https://www.npmjs.com/package/path)
-- [bcrypt](https://www.npmjs.com/package/bcrypt)
-- [validator](https://www.npmjs.com/package/validator)
+- JAVAscript
+- [Node.js](https://nodejs.org/en) v16.14.2
 
 ### Frontend
+- HTML
+- CSS
+- JAVAscript
 - [react](https://www.npmjs.com/package/react)
-- [react-router-dom](https://www.npmjs.com/package/react-router-dom)
-- react-dom/client
 - [react-redux](https://www.npmjs.com/package/react-redux)
-- [@reduxjs/toolkit](https://www.npmjs.com/package/@reduxjs/toolkit)
 
 ## How to Install
 1. Clone the project.
 2. While In the project file, install dependencies (npm install).
 3. Go to the *view* file and repeat step 2.
-4. Create a .env file and copy the info in the .env.sample file (change the fields that need to be changed).
-5. Create a database using your program of choice.
+4. Create a .env file and copy the info from the .env.sample file (change the fields that need to be changed).
+5. Create a database using your program of choice (copy the queries form the model/ecommerce.sql file).
 6. Go to the main project folder using the terminal and run the command `node app.js` or `nodemon app.js`.
 7. Using a second terminal go to the *view* file and run the command `npm start`.
 

@@ -19,7 +19,7 @@ export const Header = () => {
 
   const icons = [{n:"orders",  i:orders,  e:null},
                  {n:"checkout",i:checkout,e:null},
-                 {n:"account", i:account, e:null}];
+                 {n:"profile", i:account, e:'/profile'}];
 
   const user = useSelector(state => state.auth);
 

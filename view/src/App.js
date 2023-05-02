@@ -9,6 +9,7 @@ import { Header }          from './components/header/header';
 import { RegisterOrLogin } from './features/registration/Registration & Login';
 import { Shop }            from './features/shop/Shop';
 import { DetailedProduct } from './features/detailedProduct/DetailedProduct';
+import { Profile }         from './features/profile/Profile';
 
 import './App.css';
 
@@ -23,6 +24,7 @@ function App() {
             <Route exact path="/auth"       element={<RegisterOrLogin/>}/>
             <Route       path="/"           element={<Shop/>}           />
             <Route       path="/:productId" element={<DetailedProduct/>}/>
+            <Route       path="/profile"    element={<Profile/>}/>
           </Routes>
         </main> 
           
