@@ -1,11 +1,11 @@
 const validator = require('validator');
 
-exports.validateUserData = async(data) => {
+exports.validateUserData = async(req,res,next) => {
     try {
 
-      const { user_name, email, password, date_of_birth } = data;
+      const { user_name, email, date_of_birth } = req.body;
       const new_user_name = await validator.escape(user_name);
-
+      console.log(req.body);
     //sanitization -----------------------------------
       if (!validator.isEmail(email)) {
         const err = new Error("Please enter a vaild email address");
@@ -16,8 +16,8 @@ exports.validateUserData = async(data) => {
               err.status = 406;
         throw err; 
       } else {
-        const  user = { user_name: new_user_name , email, password, date_of_birth };
-        return user;
+        req.body = { ...req.body, user_name: new_user_name };
+        next();
       }
     } catch (error) { throw(error) };   
 };
@@ -79,8 +79,9 @@ exports.validateOrder = async(req, res, next) => {
 
 exports.validateUser = async(req, res, next) => {
 
-  const/*----------*/{ user_id } = req.params;
-  if (!validator.isInt(user_id)) {
+  const/*----------*/{ user_id } = req.body;
+  console.log(user_id);
+  if (!validator.isInt(user_id+'')) {
     res.status(200);
     res.json({ message: "Please insert a user Id" }); 
   } else { next() };

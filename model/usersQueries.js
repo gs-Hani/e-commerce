@@ -42,17 +42,19 @@ const createUser = async (data) => {
 };
 
 const updateUser = async (data) => {
-  const { user_id, user_name, email, password, date_of_birth } = data;
-  const statement = `UPDATE users 
-                     SET    user_name = $1, email = $2, password = $3, date_of_birth = $4 
-                     WHERE  user_id = $5 
-                     RETURNING *`;
-  const result = await db.query(statement,[user_name, email, password, date_of_birth, user_id]);
+  try {
+    const { user_id, user_name, email, password, date_of_birth } = data;
+    const statement = `UPDATE users 
+                       SET    user_name = $1, email = $2, password = $3, date_of_birth = $4 
+                       WHERE  user_id = $5 
+                       RETURNING *`;
+    const  result = await db.query(statement,[user_name, email, password, date_of_birth, user_id]);
+    return result.rows[0];
 
-  if  (!result) {
-    throw error
-  } 
-  return result.rows[0];
+  } catch (error) {
+    throw (error)
+  }
+
 };
 
 const updateCredit         = async (data) => {

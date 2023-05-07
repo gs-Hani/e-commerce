@@ -7,8 +7,8 @@ module.exports = (app) => {
 
     app.use('/users', router);
 
-    router.get   ('/:user_id',                                 userById);
-    router.put   ('/:user_id', validateUser,validateUserData,  updateUser);
-    router.delete('/:user_id', validateUser,                   deleteUser);
+    router.get   ('/:user_id',                                      userById);
+    router.put   ('/updateAccount', validateUser,validateUserData,  updateUser);
+    router.delete('/:user_id',      validateUser,                   deleteUser);
 };
 

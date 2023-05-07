@@ -1,5 +1,5 @@
 const { userById, updateAccount, deleteAccount } = require('../services/usersService');
-const { passwordHash } /*---------------------*/ = require('../services/authService');
+const { passwordHash, sign_in } /*------------*/ = require('../services/authService');
 
 exports.userById = async (req,res) => {
     try {
@@ -15,14 +15,17 @@ exports.userById = async (req,res) => {
 
 exports.updateUser = async (req,res,next) => {
     try {
-        const { user_id }/*--------------------------------------*/= req.params;
-        let   { user_name, email,        password, date_of_birth } = req.body;
-        password   =  await passwordHash(password);
-        const data = { user_name, email, password, date_of_birth };
+        let { user_id, user_name, oldEmail, email, oldPassword, password, date_of_birth } = req.body;
+        const user = sign_in({email:oldEmail,password:oldPassword});
 
-        const/*------------*/response = await updateAccount({ user_id, ...data });
-        res.status(200).send(response);
-
+        if(user) {
+          password   =   await passwordHash(password);
+          const data = { user_name, email, password, date_of_birth };
+          const/*------------*/response = await updateAccount({ user_id, ...data });
+          res.status(200).send(response);
+        } else {
+          res.status(401);
+        }
       } catch (err) {
         next  (err);
     }; 

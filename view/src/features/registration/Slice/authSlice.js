@@ -1,5 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk }   from '@reduxjs/toolkit';
 import { signUp, signIn, signOut, isAuth } from '../../../util/fetch/Registration & Login';
+import { updateAccount }                   from '../../../util/fetch/Users';
 
 const initialState = {
     authenticated: false,
@@ -13,26 +14,32 @@ const initialState = {
     status:       'idle'
 };
 
-export const  sign_up  = createAsyncThunk('auth/sign_up',       async (data) => {
+export const  sign_up  = createAsyncThunk('auth/sign_up',  async (data) => {
        const/*--------------------*/{ username,email,password,date } = data;
        const  response = await signUp(username,email,password,date);
        return response;
 });
 
-export const  sign_in  = createAsyncThunk('auth/sign_in',  async (data) => {
+export const  sign_in  = createAsyncThunk('auth/sign_in',       async (data) => {
        const/*--------------------*/{ email, password } = data;
        const  response = await signIn(email, password);
        return response;
 });
 
-export const  sign_out = createAsyncThunk('auth/sign_out', async (user) => {
+export const  sign_out = createAsyncThunk('auth/sign_out',      async (user) => {
        const  response = await signOut(user);
        return response;
 });
 
-export const  is_Auth  = createAsyncThunk('auth/is_Auth',  async ()     => {
+export const  is_Auth  = createAsyncThunk('auth/is_Auth',       async ()     => {
        const  response = await isAuth();
        return response
+})
+
+export const update_data = createAsyncThunk('auth/update_data', async (data) => {
+    const response = await updateAccount(data);
+    console.log(response);
+    return response;
 })
 
 const authSlice = createSlice({
@@ -43,7 +50,7 @@ const authSlice = createSlice({
     extraReducers(builder) {
         builder
         //Sign Up===========================================
-        .addCase(sign_up.pending,   (state)         => {
+        .addCase(sign_up.pending,   (state)          => {
             state.status        = 'loading';
         })
         .addCase(sign_up.fulfilled, (state, action)  => {
@@ -57,7 +64,7 @@ const authSlice = createSlice({
             state.credit        = credit;
             state.status        = 'succeeded';
         })
-        .addCase(sign_up.rejected,  (state, action) => {
+        .addCase(sign_up.rejected,  (state, action)  => {
             state.error         =  action.error.message;
             state.status        = 'failed';
         })
@@ -116,6 +123,19 @@ const authSlice = createSlice({
         .addCase(is_Auth.rejected,  (state, action) => {
             state.error         =  action.error.message;
             state.status        = 'failed';
+        })
+        //Update Data========================================
+        .addCase(update_data.fulfilled, (state, action) => {
+            const {user_name,email,password,date_of_birth} = action.payload;
+            state.user_name     = user_name;
+            state.email         = email;
+            state.password      = password;
+            state.date_of_birth = date_of_birth;
+            console.log(action.payload);
+        })
+        .addCase(update_data.rejected, (state, action) => {
+            state.error         =  action.error.message;
+            console.log(action.error.message)
         })
     }
 });

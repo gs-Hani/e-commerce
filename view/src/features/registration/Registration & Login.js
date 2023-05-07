@@ -4,6 +4,7 @@ import          { useNavigate }              from 'react-router-dom';
 import './Registration & Login.css';
 
 import { sign_up, sign_in } from './Slice/authSlice';
+import { maxBirthDate , matchPassword } from '../../util/usefulFunctions';
 
 export const RegisterOrLogin = () => {
        const [username, setUsername] = useState();
@@ -17,24 +18,6 @@ export const RegisterOrLogin = () => {
 
        useEffect(() => { if(authenticated) {navigate('/');} },  [authenticated]);
        
-       // make minimum age required 18 years =========================================================
-       const birthDay = new Date();
-             birthDay.setFullYear( birthDay.getFullYear() - 18 );
-       const newDate = birthDay.toLocaleString('en-GB', { timeZone: 'UTC' }).split(",");
-       const maxBirthDate = newDate[0].split("/").reverse().join("-");
-
-       // validate password ==========================================================================
-       const matchPassword = (password1) => {  
-              const password2 = document.getElementById("password").value;
-              const password3 = document.getElementById("confirm-password").value;
-              if   (password1 === password2 && password1 === password3) { 
-                     document.getElementById("submit").disabled = false;
-                     document.getElementById("submit").value    = "Register";
-              } else { 
-                     document.getElementById("submit").disabled = true;
-                     document.getElementById("submit").value    = "passwords don't match";
-              }  
-       } 
        // registration response ==========================================================================
        const register = async  (username,email,password,date) => {
               dispatch(sign_up({username,email,password,date}));
@@ -106,13 +89,13 @@ export const RegisterOrLogin = () => {
               <input type    ="date"
                      id      ="date"
                      name    ="date" 
-                     max     ={maxBirthDate}
+                     max     ={maxBirthDate()}
                      onChange={(e) => setDate(e.target.value)}
                      required />
 
               <input type     ="submit"
                      id       ="submit"
-                     value    ="Register"
+                     value    ="Submit"
               />
             </form>
             {/*========================================================================================*/}

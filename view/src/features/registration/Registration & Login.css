@@ -45,7 +45,7 @@ input:focus {
 #submit, #Submit {
     border: 1px solid;
     border-radius: 5px;
-    width: 75px;
+    width: fit-content;
 }
 
 #submit, #Submit, #slide:hover {
